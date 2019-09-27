@@ -7,7 +7,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<<<<<<< HEAD
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -123,15 +122,16 @@
                 var output = "";
                 for (var i = 0; i < replyList.length; i++) {
                     output += "<table class='table' id='rep" + replyList[i][3].reply_no + ">";
+                    var reply_no = replyList[i][3].reply_no;
+                    console.log(reply_no);
                     for (var j = 0; j < replyList[i].length; j++) {
                         var reply = replyList[i][j];
-                        var sJson = JSON.stringify(replyList[i]);
                         if (j === 0) {
                             output += "<tr>";
                             output += "<th>작성자 : " + reply.id + "</th>";
                         } else if (j === 1) {
                             output += "<th colspan='2'>" + reply.reply_date + "</th>";
-                            output += '<th><input type="button" value="삭제" class="repDelete" onclick="repDelete(' + sJson + '\')" />';
+                            output += '<th><button type="button" value="'+ reply_no +'" class="repDelete">삭제</button>';
                             output += "<input type='button' value='수정' class='repUpdate'></td>";
                             output += "</tr>";
                         } else if (j === 2) {
@@ -147,7 +147,7 @@
                 $("#replyList").html(output);
 
                 $('.repDelete').on('click', function () {
-                    var num = $(this).attr('data_num');
+                    var num = $(this).attr('value');
                     console.log(num);
                     $.ajax({
                         url: "delReply.bo",
@@ -157,7 +157,7 @@
                         },
                         success: function () {
                             alert("삭제했습니다.");
-                            init();
+                            getReply();
                         },
                         error: function (error) {
                             console.log(error);
@@ -201,7 +201,7 @@
                             }),
                             success: function () {
                                 alert("수정 완료");
-                                init();
+                                getReply();
                             },
                             error: function (error) {
                                 console.log(error);
@@ -219,63 +219,6 @@
             }
         });
     }
-	$("#reply_btn").click(function(){
-		if($("#reply_content").val().trim() === ""){
-			alert("댓글을 입력하세요.");
-			$("#reply_content").val("").focus();
-		}else{
-			$.ajax({
-				url: "comment.bo",
-				type: "POST",
-				data: {
-					no : $("#no").val(),
-					id : $("#id").val(),
-					reply_content : $("#reply_content").val()
-				},
-				success: function () {
-					$("#reply_content").val("");
-					getReply();
-				},
-			})
-		}
-	})
-
-	function getReply() {
-		$.ajax({
-			url: "getReply.bo",
-			type: "POST",
-			data: {
-				bNum : ${ content_view.bId }
-			},
-			success: function (json) {
-				json = json.replace(/\n/gi, "\\r\\n");
-				$("#replyList").text("");
-				var obj = JSON.parse(json);
-
-				var replyList = obj.replyList;
-
-				var output = "";
-				for (var i = 0; i < replyList.length; i++) {
-					output += "<div class='w3-border w3-padding'>";
-					for (var j = 0; j < replyList[i].length; j++) {
-						var reply = replyList[i][j];
-						if(j === 0) {
-							output += "<i class='fa fa-user'></i>&nbsp;&nbsp;"
-							+ reply.id + "&nbsp;&nbsp;";
-						} else if (j === 1) {
-							output += "&nbsp;&nbsp;<i class='fa fa-calendar'>" +
-									"</i>&nbsp;&nbsp;";
-						} else if(j === 2) {
-							output += "<pre>" + reply.reply_content + "</pre></div>";
-						}
-					};
-				};
-				$("#replyList").html(output);
-				$(".reply_count").html(i);
-			}
-		})
-	}
-	getReply();
 
     getReply();
 </script>

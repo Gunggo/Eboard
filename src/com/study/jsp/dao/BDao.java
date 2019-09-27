@@ -597,4 +597,29 @@ public class BDao {
         }
         return list;
     }
+
+    public void delReply(int num) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = dataSource.getConnection();
+            String query = "delete from REPLY_BOARD where CNUM = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, num);
+
+            int rn = pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+                if (con != null)
+                    con.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
 }

@@ -93,11 +93,11 @@ public class BFrontController extends HttpServlet {
 		} else if (com.equals("/getReply.bo")) {
 			command = new BGetReplyCommand();
 			command.execute(request, response);
+		} else if (com.equals("/delReply.bo")) {
+			command = new BDelReplyCommand();
+			command.execute(request, response);
 		}
-//		} else if (com.equals("/delReply.bo")) {
-//			command = new BDelReplyCommand();
-//			command.execute(request, response);
-//		} else if (com.equals("/upReply.bo")) {
+//		else if (com.equals("/upReply.bo")) {
 //			command = new BUpReplyCommand();
 //			command.execute(request, response);
 //		}
