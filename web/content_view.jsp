@@ -121,8 +121,9 @@
                 var replyList = obj.replyList;
                 var output = "";
                 for (var i = 0; i < replyList.length; i++) {
-                    output += "<table class='table' id='rep" + replyList[i][3].reply_no + ">";
-                    var reply_no = replyList[i][3].reply_no;
+                    output += "<table class='table' id='rep" + replyList[i][3].reply_no + "'>";
+                    var repArr = [replyList[i][0].id, replyList[i][1].reply_date, replyList[i][2].reply_content, replyList[i][3].reply_no];
+                    reply_no = replyList[i][3].reply_no;
                     console.log(reply_no);
                     for (var j = 0; j < replyList[i].length; j++) {
                         var reply = replyList[i][j];
@@ -132,12 +133,12 @@
                         } else if (j === 1) {
                             output += "<th colspan='2'>" + reply.reply_date + "</th>";
                             output += '<th><button type="button" value="'+ reply_no +'" class="repDelete">삭제</button>';
-                            output += "<input type='button' value='수정' class='repUpdate'></td>";
+                            output += '<button type="button" value="'+ repArr +'" class="repUpdate">수정</button></th>';
                             output += "</tr>";
                         } else if (j === 2) {
                             output += "<tr>";
-                            output += "<td colspan='3'><pre style='font-size: 20px;'>" + reply.reply_content + "</pre></td>";
-                            output += "<td><div class='updateReplyDiv" + replyList[i] + "'></div></td>";
+                            output += "<td id='content_field' colspan='3'><pre style='font-size: 20px;'>" + reply.reply_content + "</pre></td>";
+                            // output += "<td><div class='updateReplyDiv" + replyList[i] + "'></div></td>";
                             output += "</tr>";
                         }
                     }
@@ -168,15 +169,13 @@
                 });
                 $('.repUpdate').on('click', function () {
 
-                    var num = $(this).attr('data_num');
-                    var text = $(this).attr('data_text');
-                    var index = $(this).attr('data_index');
-
-                    var str = '';
-                    console.log(num);
-                    console.log(text);
-                    console.log(index);
-
+                    var repArr = $(this).attr('value');
+                    console.log(repArr);
+                    console.log(repArr[0])
+                    console.log(repArr[1])
+                    console.log(repArr[2])
+                    console.log(repArr[3])
+                    //id,date,content,cNum
                     str = '<input type="hidden" id ="num"  value="' + num + '">';
                     str += '<input type="text" id ="text2"  value="' + text + '" >';
                     str += '<input type="button" value="수정완료" id="updateComment" > ';
