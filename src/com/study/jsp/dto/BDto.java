@@ -14,14 +14,22 @@ public class BDto {
 	private int bGroup;
 	private int bStep;
 	private int bIndent;
+	private int bGno;
 
+	public int getbGno() {
+		return bGno;
+	}
+
+	public void setbGno(int bGno) {
+		this.bGno = bGno;
+	}
 
 	public BDto() {
 		super();
 	}
 
 	public BDto(int bId, String bName, String bTitle, String bContent, Timestamp bDate, int bHit, int bGroup, int bStep,
-				int bIndent) {
+				int bIndent, int bGno) {
 		super();
 		this.bId = bId;
 		this.bName = bName;
@@ -32,6 +40,7 @@ public class BDto {
 		this.bGroup = bGroup;
 		this.bStep = bStep;
 		this.bIndent = bIndent;
+		this.bGno = bGno;
 	}
 
 	public int getbId() {

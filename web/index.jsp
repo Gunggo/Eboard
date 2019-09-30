@@ -74,9 +74,7 @@
 
 <div class="wrap">
     <div class="header">
-        <div class="headerIn">
             <%@include file="header.jsp" %>
-        </div>
     </div>
     <div class="container">
         <div class="container_left">

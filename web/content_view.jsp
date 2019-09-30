@@ -12,6 +12,9 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Insert title here</title>
     <style>
+        * {
+        }
+
         .w3-border {
             border: 1px solid black;
         }
@@ -21,10 +24,10 @@
             width: 60px;
         }
     </style>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Insert title here</title>
 </head>
 <body>
 <div class="header">
@@ -77,7 +80,7 @@
                 <input type="hidden" name="no" id="no" value="${ content_view.bId }">
                 <input type="hidden" name="id" id="id" value="${ id }">
                 <textarea rows="5" cols="50" class="w3-input w3-border" placeholder="댓글 작성" name="reply_content"
-                          id="reply_content"></textarea>
+                          id="reply_content" style="resize: none;"></textarea>
                 <input type="button" class="w3-button w3-border reply_btn" id="reply_btn" value="댓글 등록">
             </form>
         </c:if>
@@ -124,7 +127,6 @@
                     output += "<table class='table' id='rep" + replyList[i][3].reply_no + "'>";
                     var repArr = [replyList[i][0].id, replyList[i][1].reply_date, replyList[i][2].reply_content, replyList[i][3].reply_no];
                     reply_no = replyList[i][3].reply_no;
-                    console.log(reply_no);
                     for (var j = 0; j < replyList[i].length; j++) {
                         var reply = replyList[i][j];
                         if (j === 0) {
@@ -132,8 +134,10 @@
                             output += "<th>작성자 : " + reply.id + "</th>";
                         } else if (j === 1) {
                             output += "<th colspan='2'>" + reply.reply_date + "</th>";
-                            output += '<th><button type="button" value="'+ reply_no +'" class="repDelete">삭제</button>';
-                            output += '<button type="button" value="'+ repArr +'" class="repUpdate">수정</button></th>';
+                            if (replyList[i][0].id == ${id}) {
+                                output += '<th style="float: right" class="upRepBtn"><button type="button" value="' + reply_no + '" class="repDelete">삭제</button>';
+                                output += '<button type="button" value="' + repArr + '" class="repUpdate">수정</button></th>';
+                            }
                             output += "</tr>";
                         } else if (j === 2) {
                             output += "<tr>";
@@ -149,7 +153,6 @@
 
                 $('.repDelete').on('click', function () {
                     var num = $(this).attr('value');
-                    console.log(num);
                     $.ajax({
                         url: "delReply.bo",
                         type: "POST",
@@ -157,7 +160,7 @@
                             num: num
                         },
                         success: function () {
-                            alert("삭제했습니다.");
+                            alert("삭제되었습니다.");
                             getReply();
                         },
                         error: function (error) {
@@ -170,44 +173,45 @@
                 $('.repUpdate').on('click', function () {
 
                     var repArr = $(this).attr('value');
-                    console.log(repArr);
-                    console.log(repArr[0])
-                    console.log(repArr[1])
-                    console.log(repArr[2])
-                    console.log(repArr[3])
-                    //id,date,content,cNum
-                    str = '<input type="hidden" id ="num"  value="' + num + '">';
-                    str += '<input type="text" id ="text2"  value="' + text + '" >';
-                    str += '<input type="button" value="수정완료" id="updateComment" > ';
+                    var arrRep = repArr.split(',');
+                    var repContent = arrRep[2];
+                    var repCnum = arrRep[3];
+                    var str = '<td colspan="3" xmlns="http://www.w3.org/1999/html"><pre style="font-size: 20px;"> ' +
+                        '<textarea id="textContent" class="w3-input w3-border" rows="2" cols="50" style="resize: none; ">'
+                        + repContent + '</textarea></pre></td>'
+                    str += '<td style="float: right"><input type="button" value="수정완료" id="updateComment" ></td> ';
+                    str += '<input id="repNum" type="hidden" value="' + repCnum + '">';
 
-                    $('.updateReplyDiv' + index).html(str);
-                    console.log(str);
-
+                    $('#rep' + repCnum + ' #content_field').replaceWith(str);
+                    $('.upRepBtn').hide();
                     $('#updateComment').on('click', function () {
 
-                        var num = $('#num').val();
-                        var text = $('#text2').val();
-                        console.log(num);
-                        console.log(text);
+                        if ($("#textContent").val().trim() === "") {
+                            alert("댓글을 입력하세요.");
+                            $("#textContent").val("").focus();
+                        } else {
+                            var num = $('#repNum').val();
+                            var text = $('#textContent').val();
 
-                        $.ajax({
+                            $.ajax({
+                                url: "upReply.bo",
+                                type: "POST",
+                                data: {
+                                    num: num,
+                                    text: text
+                                },
+                                success: function () {
+                                    alert("수정 완료");
+                                    $('.upRepBtn').show();
+                                    getReply();
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
 
-                            url: "upReply.bo",
-                            type: "POST",
-                            data: JSON.stringify({
-                                num: num,
-                                text: text
-                            }),
-                            success: function () {
-                                alert("수정 완료");
-                                getReply();
-                            },
-                            error: function (error) {
-                                console.log(error);
-                            }
+                            });
 
-                        });
-
+                        }
                     });
 
                 });

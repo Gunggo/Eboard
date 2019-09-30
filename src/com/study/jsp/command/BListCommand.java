@@ -16,6 +16,7 @@ public class BListCommand implements BCommand{
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 
 		int nPage = 1;
+		int bGno = 1;
 		try {
 			String sPage = request.getParameter("page");
 			nPage = Integer.parseInt(sPage);
@@ -32,7 +33,7 @@ public class BListCommand implements BCommand{
 		session = request.getSession();
 		session.setAttribute("cpage", nPage);
 
-		ArrayList<BDto> dtos = dao.list(nPage);
+		ArrayList<BDto> dtos = dao.list(nPage, bGno);
 		request.setAttribute("list", dtos);
 	}
 }

@@ -17,31 +17,15 @@ public class BUpReplyCommand implements BCommand {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
 
-        PrintWriter out = null;
-        out = response.getWriter();
         BDao manger = BDao.getInstance();
+        String test = request.getParameter("num");
+        int num = Integer.parseInt(request.getParameter("num"));
+        String text = request.getParameter("text");
 
-        List<BCmtDto> list = manger.getReply(Integer.parseInt(request.getParameter("bNum")));
+        System.out.println(num);
+        System.out.println(text);
 
-        String json = "{\"replyList\":[";
-        for (int i = 0; i < list.size(); i++) {
-            String id = list.get(i).getbName();
-            String content = list.get(i).getbContent();
-            Date date = list.get(i).getbDate();
-            SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-DD HH:MM");
-            int reply_no = list.get(i).getcNum();
+        manger.upReply(num, text);
 
-            json += "[{\"id\":\"" + id + "\"},";
-            json += "{\"reply_date\":\"" + df.format(date) + "\"},";
-            json += "{\"reply_content\":\"" + content + "\"},";
-            json += "{\"reply_no\":\"" + reply_no + "\"}]";
-
-            if (i != list.size() - 1) {
-                json += ",";
-            }
-        }
-        json += "]}";
-
-        out.print(json);
     }
 }

@@ -33,5 +33,6 @@
     <orderEntry type="library" name="jstl" level="application" />
     <orderEntry type="library" name="jquery-3.4.1" level="application" />
     <orderEntry type="library" name="jquery-3.3.1" level="application" />
+    <orderEntry type="library" name="cos" level="application" />
   </component>
 </module>

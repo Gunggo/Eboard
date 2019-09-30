@@ -43,9 +43,12 @@ public class BFrontController extends HttpServlet {
 		HttpSession session = null;
 		session = request.getSession();
 		int curPage = 1;
+		int bGno = 1;
+
 		if(session.getAttribute("cpage") != null) {
 			curPage = (int)session.getAttribute("cpage");
 		}
+
 		if (com.equals("/write_view.bo")) {
 			viewPage = "write_view.jsp";
 		} else if (com.equals("/write.bo")) {

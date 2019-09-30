@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <fieldset>
     <legend>자유게시판</legend>
     <table class="table table-hover" width="500" cellpadding="0" cellsapcing="0" border="1">
@@ -28,7 +28,14 @@
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="5"><a href="write_view.bo">글작성</a></td>
+            <c:choose>
+                <c:when test="${param.bgno == '2'}">
+                    <td colspan="5"><a class="loginCheck" href="write_view.bo?bgno=2">글작성</a></td>
+                </c:when>
+                <c:otherwise>
+                    <td colspan="5"><a class="loginCheck" href="write_view.bo">글작성</a></td>
+                </c:otherwise>
+            </c:choose>
         </tr>
 
         <tr>

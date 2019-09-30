@@ -68,7 +68,7 @@ public class BDao {
         }
     }
 
-    public ArrayList<BDto> list(int curPage) {
+    public ArrayList<BDto> list(int curPage, int bGno) {
 
         ArrayList<BDto> dtos = new ArrayList<BDto>();
         Connection con = null;
@@ -77,7 +77,6 @@ public class BDao {
 
         int nStart = (curPage - 1) * listCount + 1;
         int nEnd = (curPage - 1) * listCount + listCount;
-
         try {
             con = dataSource.getConnection();
 
@@ -89,11 +88,12 @@ public class BDao {
                     "                  select * " +
                     "                    from MVC_BOARD " +
                     "                    order by BGROUP desc, BSTEP asc ) A " +
-                    "          where ROWNUM <= ? ) B " +
+                    "          where ROWNUM <= ? and bgno = ?) B " +
                     "where B.num >= ? ";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, nEnd);
-            pstmt.setInt(2, nStart);
+            pstmt.setInt(2, bGno);
+            pstmt.setInt(3, nStart);
             resultSet = pstmt.executeQuery();
 
             while (resultSet.next()) {
@@ -106,8 +106,9 @@ public class BDao {
                 int bGroup = resultSet.getInt("bGroup");
                 int bStep = resultSet.getInt("bStep");
                 int bIndent = resultSet.getInt("bIndent");
+                bGno = resultSet.getInt("bGno");
 
-                BDto dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent);
+                BDto dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent,bGno);
 
                 dtos.add(dto);
 
@@ -143,21 +144,6 @@ public class BDao {
         try {
             con = dataSource.getConnection();
             String query = null;
-//			String query = "select * " +
-//					"  from ( " +
-//					"         select rownum num, A.* " +
-//					"           from ( " +
-//					"                  select * " +
-//					"                    from MVC_BOARD " +
-//					"                    order by BGROUP desc, BSTEP asc ) A " +
-//					"          where ROWNUM <= ? ) B " +
-//					"where B.num >= ? ";
-//			pstmt = con.prepareStatement(query);
-//			pstmt.setInt(1, nEnd);
-//			pstmt.setInt(2, nStart);
-//			resultSet = pstmt.executeQuery();
-//			select * from MVC_BOARD
-//			where BTITLE like '%' || '네이버' || '%';
             if (se.equals("0")) {
                 query = "select * from mvc_board " +
                         "where btitle like ?";
@@ -197,8 +183,9 @@ public class BDao {
                 int bGroup = resultSet.getInt("bGroup");
                 int bStep = resultSet.getInt("bStep");
                 int bIndent = resultSet.getInt("bIndent");
+                int bGno = resultSet.getInt("bGno");
 
-                BDto dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent);
+                BDto dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent, bGno);
 
                 dtos.add(dto);
 
@@ -247,8 +234,9 @@ public class BDao {
                 int bGroup = resultSet.getInt("bGroup");
                 int bStep = resultSet.getInt("bStep");
                 int bIndent = resultSet.getInt("bIndent");
+                int bGno = resultSet.getInt("bGno");
 
-                dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent);
+                dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent, bGno);
 
             }
         } catch (Exception e) {
@@ -375,8 +363,9 @@ public class BDao {
                 int bGroup = resultSet.getInt("bGroup");
                 int bStep = resultSet.getInt("bStep");
                 int bIndent = resultSet.getInt("bIndent");
+                int bGno = resultSet.getInt("bGno");
 
-                dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent);
+                dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent, bGno);
 
             }
         } catch (Exception e) {
@@ -522,7 +511,87 @@ public class BDao {
         pinfo.setPageCount(pageCount);
         pinfo.setStartPage(startPage);
         pinfo.setEndPage(endPage);
+        return pinfo;
+    }
 
+    public BPageInfo searchPage(int curPage, String se, String keyWord) {
+
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet resultSet = null;
+
+        int listCount = 10;
+        int pageCount = 10;
+
+        int totalCount = 0;
+        try {
+            con = dataSource.getConnection();
+            String query = null;
+            if (se.equals("0")) {
+                query = "select count(case when BTITLE like ? then 1 end) as total from mvc_board";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, "%" + keyWord + "%");
+                resultSet = pstmt.executeQuery();
+            } else if (se.equals("1")) {
+                query = "select count(case when BCONTENT like ? then 1 end) as total from mvc_board";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, "%" + keyWord + "%");
+                resultSet = pstmt.executeQuery();
+            } else if (se.equals("2")) {
+                query = "select count(case when BNAME like ? then 1 end) as total from mvc_board";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, "%" + keyWord + "%");
+                resultSet = pstmt.executeQuery();
+            } else {
+                query = "select count(case when BTITLE like ? and BNAME like ? then 1 end) as total from MVC_BOARD";
+
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, "%" + keyWord + "%");
+                pstmt.setString(2, "%" + keyWord + "%");
+                resultSet = pstmt.executeQuery();
+            }
+
+            if (resultSet.next()) {
+                totalCount = resultSet.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+
+        int totalPage = totalCount / listCount;
+        if (totalCount % listCount > 0)
+            totalPage++;
+
+        int myCurPage = curPage;
+        if (myCurPage > totalPage)
+            myCurPage = totalPage;
+        if (myCurPage < 1)
+            myCurPage = 1;
+
+        int startPage = ((myCurPage - 1) / pageCount) * pageCount + 1;
+
+        int endPage = startPage + pageCount - 1;
+        if (endPage > totalPage)
+            endPage = totalPage;
+
+        BPageInfo pinfo = new BPageInfo();
+        pinfo.setTotalPage(totalCount);
+        pinfo.setListCount(listCount);
+        pinfo.setTotalPage(totalPage);
+        pinfo.setCurPage(curPage);
+        pinfo.setPageCount(pageCount);
+        pinfo.setStartPage(startPage);
+        pinfo.setEndPage(endPage);
+        System.out.println(totalPage);
         return pinfo;
     }
 
@@ -608,6 +677,33 @@ public class BDao {
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, num);
 
+            int rn = pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+                if (con != null)
+                    con.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    public void upReply(int num, String text) {
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        String query = "update REPLY_BOARD " + " set BCONTENT = ? "
+                + "where CNUM = ?";
+        try {
+            con = dataSource.getConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, text);
+            pstmt.setInt(2, num);
             int rn = pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

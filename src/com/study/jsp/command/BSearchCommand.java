@@ -25,7 +25,8 @@ public class BSearchCommand implements BCommand {
         String keyWord = request.getParameter("keyWord");
 
         BDao dao = BDao.getInstance();
-        BPageInfo pinfo = dao.articlePage(nPage);
+        BPageInfo pinfo = dao.searchPage(nPage, se, keyWord);
+        System.out.println(pinfo);
         request.setAttribute("page", pinfo);
 
         nPage = pinfo.getCurPage();

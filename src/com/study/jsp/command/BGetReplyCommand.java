@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class BGetReplyCommand implements BCommand {
     @Override
@@ -29,7 +30,7 @@ public class BGetReplyCommand implements BCommand {
             String id = list.get(i).getbName();
             String content = list.get(i).getbContent();
             Date date = list.get(i).getbDate();
-            SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-DD HH:MM");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
             int reply_no = list.get(i).getcNum();
 
             json += "[{\"id\":\"" + id + "\"},";

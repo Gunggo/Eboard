@@ -52,7 +52,7 @@
     </div>
     <div class="lg_links">
         <form action="logout.mo" method="post">
-            <input type="submit" value="로그아웃" id="frm_logout">&nbsp;&nbsp;&nbs
+            <input type="submit" value="로그아웃" id="frm_logout">&nbsp;&nbsp;
                 <input type="button" value="정보수정"
                 onclick="javascript:window.location='modify.jsp'">
         </form>
