@@ -59,6 +59,12 @@
                 </td>
             </tr>
             <tr>
+                <%if(request.getAttribute("content_view.fileName") != null) {%>
+                <th colspan="2">첨부파일</th>
+                <td colspan="8">${content_view.fileName}</td>
+                <% } %>
+            </tr>
+            <tr>
                 <td colspan="2">
                     <a href="modify_view.bo?bId=${content_view.bId }">수정</a>&nbsp;&nbsp;
                     <a href="list.bo?page=<%= session.getAttribute("cpage")%>">목록보기</a>&nbsp;&nbsp;

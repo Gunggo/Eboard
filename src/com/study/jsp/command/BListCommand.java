@@ -32,7 +32,11 @@ public class BListCommand implements BCommand{
 		HttpSession session = null;
 		session = request.getSession();
 		session.setAttribute("cpage", nPage);
-
+		if (request.getParameter("bgno") != null) {
+			String sGno = request.getParameter("bgno");
+			bGno = Integer.parseInt(sGno);
+			session.setAttribute("bgno", bGno);
+		}
 		ArrayList<BDto> dtos = dao.list(nPage, bGno);
 		request.setAttribute("list", dtos);
 	}

@@ -1,7 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <fieldset>
-    <legend>자유게시판</legend>
+    <%
+        String bgno = "1";
+        String bname = "자유게시판";
+        if (request.getParameter("bgno") != null) {
+            bgno = request.getParameter("bgno");
+            if (bgno.equals("2")) {
+                bname = "자료게시판";
+            } else {
+                bname = "자유게시판";
+            }
+        }
+    %>
+    <legend><%=bname%>
+    </legend>
     <table class="table table-hover" width="500" cellpadding="0" cellsapcing="0" border="1">
         <thead>
         <tr>
@@ -28,14 +41,12 @@
             </tr>
         </c:forEach>
         <tr>
-            <c:choose>
-                <c:when test="${param.bgno == '2'}">
-                    <td colspan="5"><a class="loginCheck" href="write_view.bo?bgno=2">글작성</a></td>
-                </c:when>
-                <c:otherwise>
-                    <td colspan="5"><a class="loginCheck" href="write_view.bo">글작성</a></td>
-                </c:otherwise>
-            </c:choose>
+            <%
+                if (bgno.equals("2")) { %>
+            <td colspan="5"><a class="loginCheck" href="write_view.bo?bgno=2">글작성</a></td>
+            <%} else {%>
+            <td colspan="5"><a class="loginCheck" href="write_view.bo">글작성</a></td>
+            <%}%>
         </tr>
 
         <tr>

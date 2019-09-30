@@ -15,6 +15,15 @@ public class BDto {
 	private int bStep;
 	private int bIndent;
 	private int bGno;
+	private String fileName;
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 	public int getbGno() {
 		return bGno;
@@ -41,6 +50,20 @@ public class BDto {
 		this.bStep = bStep;
 		this.bIndent = bIndent;
 		this.bGno = bGno;
+	}
+
+	public BDto(int bId, String bName, String bTitle, String bContent, Timestamp bDate, int bHit, int bGroup, int bStep, int bIndent, int bGno, String fileName) {
+		this.bId = bId;
+		this.bName = bName;
+		this.bTitle = bTitle;
+		this.bContent = bContent;
+		this.bDate = bDate;
+		this.bHit = bHit;
+		this.bGroup = bGroup;
+		this.bStep = bStep;
+		this.bIndent = bIndent;
+		this.bGno = bGno;
+		this.fileName = fileName;
 	}
 
 	public int getbId() {

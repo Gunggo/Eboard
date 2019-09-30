@@ -25,6 +25,7 @@ public class BWriteCommand implements BCommand {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		String bGno = "1";
 		String filename = multi.getFilesystemName("filename");
 		String title = multi.getParameter("title");
 		String writer = multi.getParameter("writer");
@@ -32,8 +33,10 @@ public class BWriteCommand implements BCommand {
 		String bName = (String) session.getAttribute("name");
 		String bTitle = multi.getParameter("bTitle");
 		String bContent = multi.getParameter("bContent");
-
+		if (!filename.equals("")) {
+			bGno = "2";
+		}
 		BDao dao = new BDao();
-		dao.write(bName, bTitle, bContent);
+		dao.write(bName, bTitle, bContent, filename, bGno);
 	}
 }

@@ -36,23 +36,34 @@ public class BDao {
         return instance;
     }
 
-    public void write(String bName, String bTitle, String bContent) {
+    public void write(String bName, String bTitle, String bContent, String fileName, String bGno) {
         Connection con = null;
         PreparedStatement pstmt = null;
 
         try {
             con = dataSource.getConnection();
-            String query = "insert into mvc_board " + " (bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent) "
-                    + " values " + " (mvc_board_seq.nextval, ?, ?, ?, 0, mvc_board_seq.currval, 0, 0 )";
-            pstmt = con.prepareStatement(query);
-            pstmt.setString(1, bName);
-            pstmt.setString(2, bTitle);
-            pstmt.setString(3, bContent);
-            int rn = pstmt.executeUpdate();
-            if (rn == 1) {
-                System.out.println("입력");
+            String query = "";
+            if (bGno.equals("1")) {
+                query = "insert into mvc_board " + " (bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent, FILENAME) "
+                        + " values " + " (mvc_board_seq.nextval, ?, ?, ?, 0, mvc_board_seq.currval, 0, 0, ?)";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, bName);
+                pstmt.setString(2, bTitle);
+                pstmt.setString(3, bContent);
+                pstmt.setString(4, fileName);
+                int rn = pstmt.executeUpdate();
             } else {
-                System.out.println("실패");
+                int bGnoI = 2;
+                query = "insert into mvc_board " + " (bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent, FILENAME, BGNO) "
+                        + " values " + " (mvc_board_seq.nextval, ?, ?, ?, 0, mvc_board_seq.currval, 0, 0, ?, ?)";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, bName);
+                pstmt.setString(2, bTitle);
+                pstmt.setString(3, bContent);
+                pstmt.setString(4, fileName);
+                pstmt.setInt(5, bGnoI);
+
+                int rn = pstmt.executeUpdate();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -235,8 +246,10 @@ public class BDao {
                 int bStep = resultSet.getInt("bStep");
                 int bIndent = resultSet.getInt("bIndent");
                 int bGno = resultSet.getInt("bGno");
+                String fileName = resultSet.getString("fileName");
 
-                dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent, bGno);
+
+                dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent, bGno, fileName);
 
             }
         } catch (Exception e) {
