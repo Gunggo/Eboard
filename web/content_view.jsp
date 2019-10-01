@@ -58,17 +58,28 @@
                     ${content_view.bContent }
                 </td>
             </tr>
-            <tr>
-                <%if(request.getAttribute("content_view.fileName") != null) {%>
-                <th colspan="2">첨부파일</th>
-                <td colspan="8">${content_view.fileName}</td>
-                <% } %>
+            <tr id="checkFile">
+                <script>
+                    output = "";
+                    if (!"${content_view.fileName}") {
+                        $(output).replaceWith('#checkFile');
+                    } else {
+                        output += '<td colspan="2">첨부파일</td>';
+                        output += '<td colspan="8"><a href="download.bo?fileName=${content_view.fileName}">${content_view.fileName}</a></td>'
+                        $("#checkFile").html(output);
+                    }
+                </script>
+
             </tr>
             <tr>
                 <td colspan="2">
-                    <a href="modify_view.bo?bId=${content_view.bId }">수정</a>&nbsp;&nbsp;
+                    <c:set var="contentName" value="${content_view.bName}"/>
+                    <c:set var="sessionName" value="${name}"/>
+                    <c:if test="${contentName == sessionName}">
+                        <a href="modify_view.bo?bId=${content_view.bId }">수정</a>&nbsp;&nbsp;
+                        <a href="delete.bo?bId=${content_view.bId }">삭제</a>&nbsp;&nbsp;
+                    </c:if>
                     <a href="list.bo?page=<%= session.getAttribute("cpage")%>">목록보기</a>&nbsp;&nbsp;
-                    <a href="delete.bo?bId=${content_view.bId }">삭제</a>&nbsp;&nbsp;
                     <a href="reply_view.bo?bId=${content_view.bId }">답변</a>&nbsp;&nbsp;
                 </td>
             </tr>
@@ -158,6 +169,11 @@
                 $("#replyList").html(output);
 
                 $('.repDelete').on('click', function () {
+                    var up;
+                    up = confirm("댓글을 삭제하시겠습니까 ?");
+                    if (!up) {
+                        return false;
+                    }
                     var num = $(this).attr('value');
                     $.ajax({
                         url: "delReply.bo",

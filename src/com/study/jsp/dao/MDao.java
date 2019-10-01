@@ -27,10 +27,7 @@ public class MDao {
             e.printStackTrace();
         }
     }
-
-    public int insertMember (MDto dto) {
-        int ri = 0;
-
+    public void snsInsert(MDto dto) {
         Connection con = null;
         PreparedStatement pstmt = null;
         String query = "insert into members values(?,?,?,?,?,?)";
@@ -44,6 +41,32 @@ public class MDao {
             pstmt.setString(4,  dto.geteMail());
             pstmt.setTimestamp(5,  dto.getrDate());
             pstmt.setString(6,  dto.getAddress());
+            pstmt.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch(Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    public int insertMember (MDto dto) {
+        int ri = 0;
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        String query = "insert into members (ID, NAME, RDATE) values (?, ?, ?)";
+
+        try {
+            con = dataSource.getConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1,  dto.getId());
+            pstmt.setString(2,  dto.getName());
+            pstmt.setTimestamp(3,  dto.getrDate());
             pstmt.executeUpdate();
             ri = MDao.MEMBER_JOIN_SUCCESS;
         } catch(Exception e) {

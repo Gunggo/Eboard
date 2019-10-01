@@ -5,9 +5,8 @@
   Time: 오전 11:17
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-    //    }
     String name = (String) session.getAttribute("name");
     String id = (String) session.getAttribute("id");
 %>
@@ -15,35 +14,40 @@
     .section_login {
         padding: 5px 20px;
     }
+
     .lg_btm h1 {
         font-size: 20px;
         font-weight: bold;
     }
+
     .lg_links input {
         float: right;
         background-color: white;
     }
+
     #frm_logout {
         padding: 0 10px;
     }
 </style>
-    <style>
-        .section_login {
-            padding: 5px 20px;
-        }
+<style>
+    .section_login {
+        padding: 5px 20px;
+    }
 
-        .lg_btm h1 {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .lg_links input {
-            float: right;
-            background-color: white;
-        }
-        #frm_logout {
-            padding: 0 10px;
-        }
-    </style>
+    .lg_btm h1 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .lg_links input {
+        float: right;
+        background-color: white;
+    }
+
+    #frm_logout {
+        padding: 0 10px;
+    }
+</style>
 </head>
 <body>
 <div class="section_login">
@@ -53,8 +57,13 @@
     <div class="lg_links">
         <form action="logout.mo" method="post">
             <input type="submit" value="로그아웃" id="frm_logout">&nbsp;&nbsp;
-                <input type="button" value="정보수정"
-                onclick="javascript:window.location='modify.jsp'">
+            <input type="button" value="정보수정"
+                   onclick="javascript:window.location='modify.jsp'">
+            <c:set var="name" value="<%=name%>"/>
+            <c:if test="${name == 'master'}">
+                <input type="button" value="관리"
+                        onclick="javascript:window.location='admin.jsp'">
+            </c:if>
         </form>
     </div>
 

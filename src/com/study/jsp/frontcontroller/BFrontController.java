@@ -102,6 +102,9 @@ public class BFrontController extends HttpServlet {
 		} else if (com.equals("/upReply.bo")) {
 			command = new BUpReplyCommand();
 			command.execute(request, response);
+		} else if (com.equals("/download.bo")) {
+			command = new BDownloadCommand();
+			command.execute(request, response);
 		}
 		if (viewPage != null) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

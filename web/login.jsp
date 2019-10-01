@@ -89,12 +89,12 @@
                             <input type="button" value="아이디 찾기">
                             <input type="button" value="비밀번호 찾기">
                             <input type="button" id="join" value="회원가입" onclick="javascript:window.location='join.jsp'">
-                            <input type="hidden" name="kakaoId">
-                            <input type="hidden" name="kakaoName">
-                            <script type='text/javascript'>
-                                $('#kakaoId').val(kakaoId);
-                                $('#kakaoName').val(kakaoName);
-                            </script>
+<%--                            <input type="hidden" name="kakaoId">--%>
+<%--                            <input type="hidden" name="kakaoName">--%>
+<%--                            <script type='text/javascript'>--%>
+<%--                                $('#kakaoId').val(kakaoId);--%>
+<%--                                $('#kakaoName').val(kakaoName);--%>
+<%--                            </script>--%>
                         </div>
                     </form>
                 </fieldset>
