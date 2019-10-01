@@ -1,4 +1,4 @@
-package com.study.jsp.command;
+package com.study.jsp.boardCommand;
 
 import java.util.ArrayList;
 

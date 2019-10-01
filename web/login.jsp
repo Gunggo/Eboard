@@ -89,6 +89,7 @@
                             <input type="button" value="아이디 찾기">
                             <input type="button" value="비밀번호 찾기">
                             <input type="button" id="join" value="회원가입" onclick="javascript:window.location='join.jsp'">
+                            <input type="button" value="메인으로" onclick="javascript:window.location='list.bo'">
 <%--                            <input type="hidden" name="kakaoId">--%>
 <%--                            <input type="hidden" name="kakaoName">--%>
 <%--                            <script type='text/javascript'>--%>

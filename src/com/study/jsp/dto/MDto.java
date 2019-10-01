@@ -9,6 +9,7 @@ public class MDto {
     private String eMail;
     private Timestamp rDate;
     private String address;
+    private int block;
 
     public MDto(String id, String pw, String name, String eMail, Timestamp rDate, String address) {
         this.id = id;
@@ -20,6 +21,24 @@ public class MDto {
     }
 
     public MDto() {
+    }
+
+    public MDto(String id, String pw, String name, String eMail, Timestamp rDate, String address, int block) {
+        this.id = id;
+        this.pw = pw;
+        this.name = name;
+        this.eMail = eMail;
+        this.rDate = rDate;
+        this.address = address;
+        this.block = block;
+    }
+
+    public int getBlock() {
+        return block;
+    }
+
+    public void setBlock(int block) {
+        this.block = block;
     }
 
     public String getId() {

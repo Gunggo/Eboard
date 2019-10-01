@@ -1,4 +1,4 @@
-package com.study.jsp.command;
+package com.study.jsp.memberCommand;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.study.jsp.boardCommand.BCommand;
 import com.study.jsp.dao.MDao;
 import com.study.jsp.dto.MDto;
 
 
-public class loginOk implements BCommand {
+public class MLoginCommand implements BCommand {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -30,6 +31,15 @@ public class loginOk implements BCommand {
 				writer.println("<html><head></head><body>");
 				writer.println("<script language=\"javascript\">");
 				writer.println("	alert(\"아이디가 존재하지 않습니다.\");");
+				writer.println("	history.go(-1);");
+				writer.println("</script>");
+				writer.println("<body></html>");
+				writer.close();
+			}
+			if (checkNum == 11) {
+				writer.println("<html><head></head><body>");
+				writer.println("<script language=\"javascript\">");
+				writer.println("	alert(\"차단된 아이디입니다. 관리자에게 문의하세요.\");");
 				writer.println("	history.go(-1);");
 				writer.println("</script>");
 				writer.println("<body></html>");

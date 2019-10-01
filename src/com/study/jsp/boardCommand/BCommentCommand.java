@@ -1,4 +1,4 @@
-package com.study.jsp.command;
+package com.study.jsp.boardCommand;
 
 import com.study.jsp.dao.BDao;
 import com.study.jsp.dto.BCmtDto;

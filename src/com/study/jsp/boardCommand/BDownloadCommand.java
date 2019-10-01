@@ -1,4 +1,4 @@
-package com.study.jsp.command;
+package com.study.jsp.boardCommand;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;

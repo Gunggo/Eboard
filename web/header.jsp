@@ -40,7 +40,10 @@
             <a class="nav-link" href="list.bo?bgno=2">자료게시판</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#"></a>
+            <a class="nav-link" href="list.bo?bgno=3">공지게시판</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="javascript:window.location='admin.jsp'">관리자</a>
         </li>
     </ul>
 </div>

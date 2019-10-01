@@ -8,6 +8,8 @@
             bgno = request.getParameter("bgno");
             if (bgno.equals("2")) {
                 bname = "자료게시판";
+            } else if (bgno.equals("3")){
+                bname = "공지사항";
             } else {
                 bname = "자유게시판";
             }
@@ -111,6 +113,5 @@
             </td>
         </tr>
         </tbody>
-
     </table>
 </fieldset>

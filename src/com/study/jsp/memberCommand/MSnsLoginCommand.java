@@ -1,16 +1,16 @@
-package com.study.jsp.command;
+package com.study.jsp.memberCommand;
 
+import com.study.jsp.boardCommand.BCommand;
 import com.study.jsp.dao.MDao;
 import com.study.jsp.dto.MDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 
-public class snsLoginOk implements BCommand {
+public class MSnsLoginCommand implements BCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         try {

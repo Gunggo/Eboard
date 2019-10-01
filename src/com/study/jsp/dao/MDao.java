@@ -27,10 +27,15 @@ public class MDao {
             e.printStackTrace();
         }
     }
+
+    public static MDao getInstance() {
+        return null;
+    }
+
     public void snsInsert(MDto dto) {
         Connection con = null;
         PreparedStatement pstmt = null;
-        String query = "insert into members values(?,?,?,?,?,?)";
+        String query = "insert into members (id, pw, name, email, rdate, address) values(?,?,?,?,?,?)";
 
         try {
             con = dataSource.getConnection();
@@ -84,14 +89,14 @@ public class MDao {
     }
 
     public int userCheck(String id, String pw) {
-        System.out.println("체크체크");
         int ri = 0;
-        String dbPw;
+        String dbPw = "";
+        int block = 0;
 
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet set = null;
-        String query = "select pw from members where id = ?";
+        String query = "select * from members where id = ?";
 
         try {
             con = dataSource.getConnection();
@@ -101,11 +106,12 @@ public class MDao {
 
             if(set.next()) {
                 dbPw = set.getString("pw");
-                if (dbPw.equals(pw)) {
-                    System.out.println("login ok");
+                block = set.getInt("block");
+                if (block == 1) {
+                    ri = 11;
+                } else if(dbPw.equals(pw)){
                     ri = MDao.MEMBER_LOGIN_SUCCESS;
                 } else {
-                    System.out.println("login fail");
                     ri = MDao.MEMBER_LOGIN_PW_NO_GOOD;
                 }
             } else {
@@ -146,6 +152,7 @@ public class MDao {
                 dto.seteMail(set.getString("eMail"));
                 dto.setrDate(set.getTimestamp("rDate"));
                 dto.setAddress(set.getString("address"));
+                dto.setBlock(set.getInt("block"));
             }
         } catch (Exception e) {
             e.printStackTrace();

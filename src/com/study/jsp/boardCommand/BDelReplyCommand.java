@@ -1,12 +1,10 @@
-package com.study.jsp.command;
+package com.study.jsp.boardCommand;
 
 import com.study.jsp.dao.BDao;
-import com.study.jsp.dto.BCmtDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class BDelReplyCommand implements BCommand {
     @Override

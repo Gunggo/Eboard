@@ -18,22 +18,26 @@
                 width: 750px;
             }
         }
+
         @media (min-width: 992px) {
             .container {
                 width: 940px;
             }
         }
+
         @media (min-width: 1200px) {
             .container {
                 width: 940px;
             }
         }
+
         .container {
             width: 1100px;
             height: 750px;
             margin: 0 185px;
             padding: 0 16px;
         }
+
         .container_right {
             margin-top: 60px;
             float: right;
@@ -41,23 +45,28 @@
             text-align: center;
             border: 1px solid;
         }
+
         .container_left {
             float: left;
             margin-top: 20px;
             width: 700px;
         }
+
         .footer {
         }
+
         @media (min-width: 768px) {
             .footer {
                 width: 750px;
             }
         }
+
         @media (min-width: 992px) {
             .footer {
                 width: 940px;
             }
         }
+
         @media (min-width: 1200px) {
             .footer {
                 width: 940px;
@@ -68,39 +77,60 @@
 <body>
 <%if (request.getAttribute("list") == null) {%>
 <script>
-    location.href="list.bo";
+    location.href = "list.bo";
 </script>
 <% } %>
 
 <div class="wrap">
     <div class="header">
-            <%@include file="header.jsp" %>
+        <%@include file="header.jsp" %>
     </div>
     <div class="container">
         <div class="container_left">
-            <%@include file="list.jsp"%>
+            <%@include file="list.jsp" %>
+
             <div class="searchForm">
+                <%--                <form action="search.bo">--%>
+                <%--                    <select name="search" class="form-control">--%>
+                <%--                        <option value="0">제목</option>--%>
+                <%--                        <option value="1">내용</option>--%>
+                <%--                        <option value="2">작성자</option>--%>
+                <%--                        <option value="3">제목 + 내용</option>--%>
+                <%--                    </select>--%>
+                <%--                    <input type="text" name="keyWord" class="form-control">--%>
+                <%--                    <input type="hidden" name="page" value="${page.curPage}">--%>
+                <%--                    <input type="submit" value="검색">--%>
+                <%--                </form>--%>
                 <form action="search.bo">
-                    <select name="search" class="form-control">
-                        <option value="0">제목</option>
-                        <option value="1">내용</option>
-                        <option value="2">작성자</option>
-                        <option value="3">제목 + 내용</option>
-                    </select>
-                    <input type="text" name="keyWord" class="form-control">
-                    <input type="hidden" name="page" value="${page.curPage}">
-                    <input type="submit" value="검색">
+                    <div class="form-group row justify-content-center">
+                        <div class="w100" style="padding-right:10px">
+                            <select class="form-control form-control-sm" name="search" id="searchType">
+                                <option value="0">제목</option>
+                                <option value="1">내용</option>
+                                <option value="2">작성자</option>
+                                <option value="3">제목 + 내용</option>
+                            </select>
+                        </div>
+                        <div class="w300" style="padding-right:10px">
+                            <input type="text" class="form-control form-control-sm" name="keyword" id="keyword">
+                            <input type="hidden" name="page" value="${page.curPage}">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-sm btn-primary" name="btnSearch" id="btnSearch">검색
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
-        </div>
 
+        </div>
 
 
         <div class="container_right">
             <% if (session.getAttribute("name") == null) {%>
             <%@include file="main_login.jsp" %>
             <% } else {%>
-            <%@include file="main_loginAfter.jsp"%>
+            <%@include file="main_loginAfter.jsp" %>
             <%}%>
         </div>
     </div>
