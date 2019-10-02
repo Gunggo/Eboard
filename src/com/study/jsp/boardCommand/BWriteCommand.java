@@ -27,9 +27,6 @@ public class BWriteCommand implements BCommand {
 		}
 		String bGno = "1";
 		String filename = multi.getFilesystemName("filename");
-		String title = multi.getParameter("title");
-		String writer = multi.getParameter("writer");
-		int count = 0;
 		String bName = (String) session.getAttribute("name");
 		String bTitle = multi.getParameter("bTitle");
 		String bContent = multi.getParameter("bContent");

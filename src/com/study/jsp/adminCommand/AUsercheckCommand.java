@@ -19,8 +19,8 @@ public class AUsercheckCommand implements ACommand{
 
         String keyword = "";
         String se = "";
-        if (request.getParameter("keyword") != null) {
-            keyword = request.getParameter("keyword");
+        if (request.getParameter("keyWord") != null) {
+            keyword = request.getParameter("keyWord");
         }
         if (request.getParameter("searchType") != null) {
             se = request.getParameter("searchType");

@@ -37,24 +37,23 @@ public class ADao {
 
         try {
             con = dataSource.getConnection();
-
-            if (keyword.equals("")) {
+            if (keyword.equals("") && se.equals("")) {
                 pstmt = con.prepareStatement("select * from MEMBERS");
                 resultSet = pstmt.executeQuery();
             } else if (se.equals("0")) {
-                String query = "select * from members where id = ?";
+                String query = "select * from members where id like ?";
                 pstmt = con.prepareStatement(query);
-                pstmt.setString(1, "%" + keyword + "%");
+                pstmt.setString(1, keyword);
                 resultSet = pstmt.executeQuery();
             } else if (se.equals("1")) {
-                String query = "select * from members where name = ?";
+                String query = "select * from members where name like ?";
                 pstmt = con.prepareStatement(query);
-                pstmt.setString(1,"%" + keyword + "%");
+                pstmt.setString( 1, keyword);
                 resultSet = pstmt.executeQuery();
             } else {
-                String query = "select * from members where EMAIL = ?";
+                String query = "select * from members where EMAIL like ?";
                 pstmt = con.prepareStatement(query);
-                pstmt.setString(1,"%" + keyword + "%");
+                pstmt.setString(1,keyword);
                 resultSet = pstmt.executeQuery();
             }
 

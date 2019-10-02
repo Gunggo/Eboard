@@ -62,32 +62,32 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script>
-    function getResult() {
+    function getResult(searchType, keyWord) {
         $.ajax({
             url: "checkUser.ao",
             type: "POST",
-            // data: {
-            //     searchType: searchType,
-            //     keyword: keyword
-            // },
+            data: {
+                searchType : searchType,
+                keyWord : keyWord
+            },
             success: function (json) {
                 json = json.replace(/\n/gi, "\\r\\n");
                 $(".selResult").text("");
                 var obj = JSON.parse(json);
                 var userList = obj.userList;
                 var output = "";
+                output += "<table class='table table-hover' id='userTable'>";
+                output += '<tr style="text-align: center;">';
+                output += '<th scope="col">아이디</th>';
+                output += '<th scope="col">비밀번호</th>';
+                output += '<th scope="col">이름</th>';
+                output += '<th scope="col">이메일</th>';
+                output += '<th scope="col">가입날짜</th>';
+                output += '<th scope="col">주소</th>';
+                output += '<th scope="col">차단여부</th>';
+                output += '<th scope="col"></th>';
+                output += '</tr>';
                 for (var i = 0; i < userList.length; i++) {
-                    output += "<table class='table table-hover' id='rep" + userList[i][2].userName + "'>";
-                    output += '<tr style="text-align: center;">';
-                    output += '<th scope="col">아이디</th>';
-                    output += '<th scope="col">비밀번호</th>';
-                    output += '<th scope="col">이름</th>';
-                    output += '<th scope="col">이메일</th>';
-                    output += '<th scope="col">가입날짜</th>';
-                    output += '<th scope="col">주소</th>';
-                    output += '<th scope="col">차단여부</th>';
-                    output += '<th scope="col"></th>';
-                    output += '</tr>';
                     for (var j = 0; j < userList[i].length; j++) {
                         var user = userList[i][j];
                         if (j === 0) {
@@ -119,7 +119,7 @@
                     ;
                     output += "</table>";
                 }
-                var str = ""
+                var str = "";
                 str += '<div class="form-group row justify-content-center">';
                 str += '<div class="w100" style="padding-right:10px">';
                 str += '<select class="form-control form-control-sm" name="searchType" id="searchType">';
@@ -140,9 +140,9 @@
                 $(".serachBox").html(str);
 
                 $('#btnSearch').on('click', function(e){
-                    e.preventDefault();
                     searchType = $('#searchType').val();
-                    keyword = $('#keyword').val();
+                    keyWord = $('#keyword').val();
+                    getResult(searchType, keyWord);
                 });
 
                 $('.blockUser').on('click', function () {
