@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -53,7 +55,6 @@ public class BDao {
                 pstmt.setString(4, fileName);
                 int rn = pstmt.executeUpdate();
             } else {
-                int bGnoI = 2;
                 query = "insert into mvc_board " + " (bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent, FILENAME, BGNO) "
                         + " values " + " (mvc_board_seq.nextval, ?, ?, ?, 0, mvc_board_seq.currval, 0, 0, ?, ?)";
                 pstmt = con.prepareStatement(query);
@@ -61,9 +62,9 @@ public class BDao {
                 pstmt.setString(2, bTitle);
                 pstmt.setString(3, bContent);
                 pstmt.setString(4, fileName);
-                pstmt.setInt(5, bGnoI);
+                pstmt.setInt(5, Integer.parseInt(bGno));
 
-                int rn = pstmt.executeUpdate();
+                pstmt.executeUpdate();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,12 +80,13 @@ public class BDao {
         }
     }
 
-    public ArrayList<BDto> list(int curPage, int bGno) {
+    public ArrayList<BDto> list(int curPage, int bGno, int check) {
 
         ArrayList<BDto> dtos = new ArrayList<BDto>();
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet resultSet = null;
+        String query = "";
 
         int nStart = (curPage - 1) * listCount + 1;
         int nEnd = (curPage - 1) * listCount + listCount;
@@ -92,20 +94,36 @@ public class BDao {
             con = dataSource.getConnection();
 
 
-            String query = "select * " +
-                    "  from ( " +
-                    "         select rownum num, A.* " +
-                    "           from ( " +
-                    "                  select * " +
-                    "                    from MVC_BOARD " +
-                    "                    order by BGROUP desc, BSTEP asc ) A " +
-                    "          where ROWNUM <= ? and bgno = ?) B " +
-                    "where B.num >= ? ";
-            pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, nEnd);
-            pstmt.setInt(2, bGno);
-            pstmt.setInt(3, nStart);
-            resultSet = pstmt.executeQuery();
+            if (check == 1) {
+                query = "select * " +
+                        "  from ( " +
+                        "         select rownum num, A.* " +
+                        "           from ( " +
+                        "                  select * " +
+                        "                    from MVC_BOARD " +
+                        "                    order by BGROUP desc, BSTEP asc ) A " +
+                        "          where ROWNUM <= ? and bgno = ?) B " +
+                        "where B.num >= ? ";
+                pstmt = con.prepareStatement(query);
+                pstmt.setInt(1, nEnd);
+                pstmt.setInt(2, bGno);
+                pstmt.setInt(3, nStart);
+                resultSet = pstmt.executeQuery();
+            } else if (check == 2) {
+                query = "select * " +
+                        "  from ( " +
+                        "         select rownum num, A.* " +
+                        "           from ( " +
+                        "                  select * " +
+                        "                    from MVC_BOARD " +
+                        "                    order by BGROUP desc, BSTEP asc ) A " +
+                        "          where ROWNUM <= ? and bgno = 3) B " +
+                        "where B.num >= ? ";
+                pstmt = con.prepareStatement(query);
+                pstmt.setInt(1, nEnd);
+                pstmt.setInt(2, nStart);
+                resultSet = pstmt.executeQuery();
+            }
 
             while (resultSet.next()) {
                 int bId = resultSet.getInt("bId");
@@ -119,7 +137,7 @@ public class BDao {
                 int bIndent = resultSet.getInt("bIndent");
                 bGno = resultSet.getInt("bGno");
 
-                BDto dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent,bGno);
+                BDto dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent, bGno);
 
                 dtos.add(dto);
 
@@ -154,7 +172,7 @@ public class BDao {
 
         try {
             con = dataSource.getConnection();
-            String query = null;
+            String query = "";
             if (se.equals("0")) {
                 query = "select * from mvc_board " +
                         "where btitle like ?";
@@ -468,7 +486,7 @@ public class BDao {
         }
     }
 
-    public BPageInfo articlePage(int curPage) {
+    public BPageInfo articlePage(int curPage, int bgno) {
 
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -476,14 +494,25 @@ public class BDao {
 
         int listCount = 10;
         int pageCount = 10;
-
         int totalCount = 0;
+        String query = "";
         try {
             con = dataSource.getConnection();
 
-            String query = "select count(*) as total from mvc_board";
-            pstmt = con.prepareStatement(query);
-            resultSet = pstmt.executeQuery();
+            // bgno값이 setInt로 안들어가는 이유는 ???
+            if (bgno == 1) {
+                query = "select count(case when BGNO like 1 then 1 end) as total from mvc_board";
+                pstmt = con.prepareStatement(query);
+                resultSet = pstmt.executeQuery();
+            } else if (bgno == 2) {
+                query = "select count(case when BGNO like 2 then 1 end) as total from mvc_board";
+                pstmt = con.prepareStatement(query);
+                resultSet = pstmt.executeQuery();
+            } else {
+                query = "select count(case when BGNO like 3 then 1 end) as total from mvc_board";
+                pstmt = con.prepareStatement(query);
+                resultSet = pstmt.executeQuery();
+            }
 
             if (resultSet.next()) {
                 totalCount = resultSet.getInt("total");
@@ -517,7 +546,7 @@ public class BDao {
             endPage = totalPage;
 
         BPageInfo pinfo = new BPageInfo();
-        pinfo.setTotalPage(totalCount);
+        pinfo.setTotalCount(totalCount);
         pinfo.setListCount(listCount);
         pinfo.setTotalPage(totalPage);
         pinfo.setCurPage(curPage);
@@ -527,7 +556,7 @@ public class BDao {
         return pinfo;
     }
 
-    public BPageInfo searchPage(int curPage, String se, String keyWord) {
+    public BPageInfo searchPage(int curPage, String se, String keyWord, int bgno) {
 
 
         Connection con = null;
@@ -542,26 +571,29 @@ public class BDao {
             con = dataSource.getConnection();
             String query = null;
             if (se.equals("0")) {
-                query = "select count(case when BTITLE like ? then 1 end) as total from mvc_board";
+                query = "select count(case when BTITLE like ? and BGNO like ? then 1 end) as total from mvc_board";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, "%" + keyWord + "%");
+                pstmt.setInt(2, bgno);
                 resultSet = pstmt.executeQuery();
             } else if (se.equals("1")) {
-                query = "select count(case when BCONTENT like ? then 1 end) as total from mvc_board";
+                query = "select count(case when BCONTENT like ? and BGNO like ? then 1 end) as total from mvc_board";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, "%" + keyWord + "%");
+                pstmt.setInt(2, bgno);
                 resultSet = pstmt.executeQuery();
             } else if (se.equals("2")) {
-                query = "select count(case when BNAME like ? then 1 end) as total from mvc_board";
+                query = "select count(case when BNAME like ? and BGNO like ? then 1 end) as total from mvc_board";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, "%" + keyWord + "%");
+                pstmt.setInt(2, bgno);
                 resultSet = pstmt.executeQuery();
             } else {
-                query = "select count(case when BTITLE like ? and BNAME like ? then 1 end) as total from MVC_BOARD";
-
+                query = "select count(case when BTITLE like ? and BNAME like ? and BGNO like ?then 1 end) as total from MVC_BOARD";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString(1, "%" + keyWord + "%");
                 pstmt.setString(2, "%" + keyWord + "%");
+                pstmt.setInt(3, bgno);
                 resultSet = pstmt.executeQuery();
             }
 

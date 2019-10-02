@@ -14,6 +14,7 @@ public class BSearchCommand implements BCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         int nPage = 1;
+        int bgno = 1;
         String se = "";
         try {
             String sPage = request.getParameter("page");
@@ -21,12 +22,15 @@ public class BSearchCommand implements BCommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if(request.getParameter("bgno") != null) {
+            String sgno = request.getParameter("bgno");
+            bgno = Integer.parseInt(sgno);
+        }
         se = request.getParameter("search");
-        String keyWord = request.getParameter("keyWord");
+        String keyWord = request.getParameter("keyword");
 
         BDao dao = BDao.getInstance();
-        BPageInfo pinfo = dao.searchPage(nPage, se, keyWord);
-        System.out.println(pinfo);
+        BPageInfo pinfo = dao.searchPage(nPage, se, keyWord, bgno);
         request.setAttribute("page", pinfo);
 
         nPage = pinfo.getCurPage();

@@ -14,11 +14,6 @@
             border-bottom: 1px solid #d1d8e4;
             background-color: #f8f9fa;
         }
-
-        .navbar {
-            width: 1100px;
-            margin: 0 auto;
-        }
         /*.container {*/
         /*    width: 1100px;*/
         /*    height: 100px;*/

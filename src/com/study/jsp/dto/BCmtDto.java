@@ -8,6 +8,15 @@ public class BCmtDto {
     private Timestamp bDate;
     private String bName;
     private String bContent;
+    private int recnt;
+
+    public int getRecnt() {
+        return recnt;
+    }
+
+    public void setRecnt(int recnt) {
+        this.recnt = recnt;
+    }
 
     public BCmtDto() {
     }

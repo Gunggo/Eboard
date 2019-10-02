@@ -17,6 +17,7 @@ public class BWriteCommand implements BCommand {
 		HttpSession session = request.getSession();
 		MultipartRequest multi = null;
 		int sizeLimit = 10* 1024* 1024;
+		String bGno = "1";
 		String savePath = request.getSession().getServletContext().getRealPath("/upload");
 
 		try {
@@ -25,14 +26,17 @@ public class BWriteCommand implements BCommand {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String bGno = "1";
+		if (request.getParameter("bgno") != null) {
+			bGno = multi.getParameter("bgno");
+		}
+
 		String filename = multi.getFilesystemName("filename");
 		String bName = (String) session.getAttribute("name");
+		if (filename == null) {
+			filename = "";
+		}
 		String bTitle = multi.getParameter("bTitle");
 		String bContent = multi.getParameter("bContent");
-		if (!filename.equals("")) {
-			bGno = "2";
-		}
 		BDao dao = new BDao();
 		dao.write(bName, bTitle, bContent, filename, bGno);
 	}

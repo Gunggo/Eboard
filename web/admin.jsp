@@ -36,6 +36,10 @@
             margin: 0 185px;
             padding: 0 16px;
         }
+
+        .w100 div {
+            float: left;
+        }
     </style>
 </head>
 <body>
@@ -67,8 +71,8 @@
             url: "checkUser.ao",
             type: "POST",
             data: {
-                searchType : searchType,
-                keyWord : keyWord
+                searchType: searchType,
+                keyWord: keyWord
             },
             success: function (json) {
                 json = json.replace(/\n/gi, "\\r\\n");
@@ -139,7 +143,7 @@
                 $(".selResult").html(output);
                 $(".serachBox").html(str);
 
-                $('#btnSearch').on('click', function(e){
+                $('#btnSearch').on('click', function (e) {
                     searchType = $('#searchType').val();
                     keyWord = $('#keyword').val();
                     getResult(searchType, keyWord);
@@ -214,7 +218,65 @@
     };
 
     $('.ctnUser').on('click', function () {
-        alert("ctnUserCheck")
+        $(".selResult").text("");
+        var str = "";
+        str += '<div class="form-group row justify-content-center">';
+        str += '<div class="w100" style="padding-right:10px; float: left;">';
+        str += '<div class="searchType">';
+        str += '<select class="form-control form-control-sm" name="searchType" id="searchType"style="display: inline-block;">';
+        str += '<option value="0">게시왕</option>';
+        str += '<option value="1">댓글왕</option>';
+        str += '</select>';
+        str += '<input type="date" name="startDate" id="startDate">';
+        str += '<input type="date" name="endDate" id="endDate" >';
+        str += '<button type="button" name="btnSearch" id="btnSearch">검색';
+        str += '</div>';
+        str += '<div class="startYear">';
+        str += '</div>';
+        str += '</div>';
+
+        $(".selResult").html(str);
+        $(".serachBox").text("");
+    });
+
+    $('#btnSearch').on('click', function () {
+        var searchType = $('#searchType').val();
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+        alert(searchType);
+        alert(startDate);
+        alert(endDate);
+    });
+
+    $('#btnDateSearch').on('click', function () {
+        var checkNum = 2;//3개월이면 2로 셋팅
+        //선택된 값을 가져온다.
+        var startYear = $("#start_year").val();
+        var startMonth = $("#start_month").val();
+        var endYear = $("#end_year").val();
+        var endMonth = $("#end_month").val();
+        alert(startMonth);
+        //계산을 위해 명시적으로 형변환
+        var startYearNum = Number(startYear);
+        var startMonthNum = Number(startMonth);
+        var endYearNum = Number(endYear);
+        var endMonthNum = Number(endMonth);
+
+        //일단 차이를 재서 위에서 정한 월이 넘어가는지 확인
+        var result = ((endYearNum * 12) + endMonthNum) - ((startYearNum * 12) + startMonthNum);
+        if (result > checkNum) {
+            alert("날짜 검색 범위는 " + (checkNum + 1) + "개월 입니다.");
+            if (endMonthNum <= checkNum) {
+                startYearNum = endYearNum - 1;
+                startMonthNum = 12 - (checkNum - endMonthNum)
+            } else {
+                startYearNum = endYearNum;
+                startMonthNum = endMonthNum - checkNum;
+            }
+            $("#start_year").val(startYearNum).attr("selected", "selected");
+            $("#start_month").val(startMonthNum).attr("selected", "selected");
+        }
+        ;
     });
 
     $('.repUser').on('click', function () {
@@ -223,3 +285,62 @@
 </script>
 </body>
 </html>
+
+
+
+<%--// str += '<select id="start_year" name="start_year" class="form-control form-control-sm">';--%>
+<%--// str += '<option value="2019" >2019</option>';--%>
+<%--// str += '<option value="2018" >2018</option>';--%>
+<%--// str += '<option value="2017" >2017</option>';--%>
+<%--// str += '<option value="2016" >2016</option>';--%>
+<%--// str += '<option value="2015" >2015</option>';--%>
+<%--// str += '<option value="2014" >2014</option>';--%>
+<%--// str += '<option value="2013" >2013</option>';--%>
+<%--// str += '</select>';--%>
+<%--// str += '</div>';--%>
+<%--// str += '<div class="startMonth">';--%>
+<%--// str += '<select id="start_month" name="start_month" class="form-control form-control-sm">';--%>
+<%--// str += '<option value="1" >1</option>';--%>
+<%--// str += '<option value="2" >2</option>';--%>
+<%--// str += '<option value="3" >3</option>';--%>
+<%--// str += '<option value="4" >4</option>';--%>
+<%--// str += '<option value="5" >5</option>';--%>
+<%--// str += '<option value="6" >6</option>';--%>
+<%--// str += '<option value="7" >7</option>';--%>
+<%--// str += '<option value="8" >8</option>';--%>
+<%--// str += '<option value="9" >9</option>';--%>
+<%--// str += '<option value="10" >10</option>';--%>
+<%--// str += '<option value="11" >11</option>';--%>
+<%--// str += '<option value="12" >12</option>';--%>
+<%--// str += '</select>';--%>
+<%--// str += '</div>';--%>
+<%--// str += '<div class="endYear">';--%>
+<%--// str += '<select id="end_year" name="end_year" class="form-control form-control-sm">';--%>
+<%--// str += '<option value="2019" >2019</option>';--%>
+<%--// str += '<option value="2018" >2018</option>';--%>
+<%--// str += '<option value="2017" >2017</option>';--%>
+<%--// str += '<option value="2016" >2016</option>';--%>
+<%--// str += '<option value="2015" >2015</option>';--%>
+<%--// str += '<option value="2014" >2014</option>';--%>
+<%--// str += '<option value="2013" >2013</option>';--%>
+<%--// str += '</select>';--%>
+<%--// str += '</div>';--%>
+<%--// str += '<div class="endMonth">';--%>
+<%--// str += '<select id="end_month" name="end_month" class="form-control form-control-sm">';--%>
+<%--// str += '<option value="1" >1</option>';--%>
+<%--// str += '<option value="2" >2</option>';--%>
+<%--// str += '<option value="3" >3</option>';--%>
+<%--// str += '<option value="4" >4</option>';--%>
+<%--// str += '<option value="5" >5</option>';--%>
+<%--// str += '<option value="6" >6</option>';--%>
+<%--// str += '<option value="7" >7</option>';--%>
+<%--// str += '<option value="8" >8</option>';--%>
+<%--// str += '<option value="9" >9</option>';--%>
+<%--// str += '<option value="10" >10</option>';--%>
+<%--// str += '<option value="11" >11</option>';--%>
+<%--// str += '<option value="12" >12</option>';--%>
+<%--// str += '</select>';--%>
+<%--// str += '</div>';--%>
+<%--// str += '<div class="searchBtn">';--%>
+<%--// str += '<button class="btn btn-sm btn-primary" name="btnDateSearch" id="btnDateSearch" onclick="btnDateSearch()">검색</input>';--%>
+<%--// str += '</div>';--%>

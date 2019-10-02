@@ -90,17 +90,6 @@
             <%@include file="list.jsp" %>
 
             <div class="searchForm">
-                <%--                <form action="search.bo">--%>
-                <%--                    <select name="search" class="form-control">--%>
-                <%--                        <option value="0">제목</option>--%>
-                <%--                        <option value="1">내용</option>--%>
-                <%--                        <option value="2">작성자</option>--%>
-                <%--                        <option value="3">제목 + 내용</option>--%>
-                <%--                    </select>--%>
-                <%--                    <input type="text" name="keyWord" class="form-control">--%>
-                <%--                    <input type="hidden" name="page" value="${page.curPage}">--%>
-                <%--                    <input type="submit" value="검색">--%>
-                <%--                </form>--%>
                 <form action="search.bo">
                     <div class="form-group row justify-content-center">
                         <div class="w100" style="padding-right:10px">
@@ -127,11 +116,20 @@
 
 
         <div class="container_right">
-            <% if (session.getAttribute("name") == null) {%>
-            <%@include file="main_login.jsp" %>
-            <% } else {%>
-            <%@include file="main_loginAfter.jsp" %>
-            <%}%>
+            <c:set var="name" value="${name}"/>
+            <c:choose>
+                <c:when test="${name == null}">
+                    <%@include file="main_login.jsp" %>
+                </c:when>
+                <c:otherwise>
+                    <%@include file="main_loginAfter.jsp" %>
+                </c:otherwise>
+            </c:choose>
+<%--            <% if (session.getAttribute("name") == null) {%>--%>
+<%--            <%@include file="main_login.jsp" %>--%>
+<%--            <% } else {%>--%>
+<%--            <%@include file="main_loginAfter.jsp" %>--%>
+<%--            <%}%>--%>
         </div>
     </div>
     <div class="footer">
@@ -140,10 +138,18 @@
 
 <script>
     $('.loginCheck').click(function () {
-        <% if (session.getAttribute("ValidMem") == null) {%>
+        <c:set var="ValidMem" value="${ValidMem}"/>
+        <c:set var="name" value="${name}"/>
+        <c:set var="bgno" value="${bgno}"/>
+        <c:if test="${ValidMem == null}">
         alert("로그인 후 이용하세요.")
         return false;
-        <%} %>
+        </c:if>
+
+        <c:if test="${bgno == '3' && name != 'master'}">
+        alert("권한이 없습니다.")
+        return false;
+        </c:if>
     });
 </script>
 

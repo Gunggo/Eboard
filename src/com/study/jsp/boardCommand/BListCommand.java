@@ -14,30 +14,37 @@ public class BListCommand implements BCommand{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = null;
+		session = request.getSession();
 
 		int nPage = 1;
 		int bGno = 1;
+		int check = 1;
 		try {
-			String sPage = request.getParameter("page");
-			nPage = Integer.parseInt(sPage);
+			if (request.getParameter("page") != null) {
+				String sPage = request.getParameter("page");
+				nPage = Integer.parseInt(sPage);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		BDao dao = BDao.getInstance();
-		BPageInfo pinfo = dao.articlePage(nPage);
-		request.setAttribute("page", pinfo);
-
-		nPage = pinfo.getCurPage();
-
-		HttpSession session = null;
-		session = request.getSession();
-		session.setAttribute("cpage", nPage);
 		if (request.getParameter("bgno") != null) {
 			String sGno = request.getParameter("bgno");
 			bGno = Integer.parseInt(sGno);
 			session.setAttribute("bgno", bGno);
 		}
-		ArrayList<BDto> dtos = dao.list(nPage, bGno);
+
+		BDao dao = BDao.getInstance();
+		BPageInfo pinfo = dao.articlePage(nPage, bGno);
+		request.setAttribute("page", pinfo);
+
+		nPage = pinfo.getCurPage();
+
+		session.setAttribute("cpage", nPage);
+		ArrayList<BDto> dtos = dao.list(nPage, bGno, check);
 		request.setAttribute("list", dtos);
+		check = 2;
+		ArrayList<BDto> dtost = dao.list(nPage, bGno, check);
+		request.setAttribute("topList", dtost);
 	}
 }

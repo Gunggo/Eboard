@@ -14,7 +14,7 @@
 </div>
 <div class="container">
     <table width="500" cellpadding="0" cellspacing="0" border="1">
-        <form name="fmField" action="write.bo" method="post" enctype="multipart/form-data"
+        <form name="fmField" action="write.bo?bgno=${param.bgno}" method="post" enctype="multipart/form-data"
               onsubmit="return checkForm();">
             <tr>
                 <td> 제목</td>
