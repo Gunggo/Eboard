@@ -113,6 +113,21 @@ public class ADao {
                 }
             }
 
+            if (!startDate.equals("") && !endDate.equals("")) {
+                if (searchType.equals("0")) {
+                    pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from MVC_BOARD where BNAME = MEMBERS.BNAME" +
+                            " and BDATE between to_date(?,'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') + 1) count from MEMBERS");
+                    pstmt.setString( 1, startDate);
+                    pstmt.setString( 2, endDate);
+                    resultSet = pstmt.executeQuery();
+                } else if(searchType.equals("1")) {
+                    pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from REPLY_BOARD where BNAME = MEMBERS.BNAME" +
+                            " and BDATE between to_date(?,'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') + 1) count from MEMBERS");
+                    pstmt.setString( 1, startDate);
+                    pstmt.setString( 2, endDate);
+                    resultSet = pstmt.executeQuery();
+                }
+            }
 
 
             while (resultSet.next()) {

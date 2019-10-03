@@ -80,6 +80,14 @@
     location.href = "list.bo";
 </script>
 <% } %>
+<%--<script type="text/javascript">--%>
+<%--    tocplusTop=95--%>
+<%--    tocplusLeft=55--%>
+<%--    tocplusWidth=310--%>
+<%--    tocplusHeight=140--%>
+<%--    tocplusFrameColor="orange"--%>
+<%--    tocplusUserName="Guest"--%>
+<%--</script> <script type="text/javascript" src="http://tocplus007.com:80/chatLoader.do?userId=test_ko"></script>--%>
 
 <div class="wrap">
     <div class="header">

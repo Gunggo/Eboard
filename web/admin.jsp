@@ -248,6 +248,10 @@
             searchType = $('#searchType').val();
             startDate = $('#startDate').val();
             endDate = $('#endDate').val();
+            if (startDate > endDate) {
+                alert("종료일은 시작일 전이 될 수 없습니다.\n다시 선택해주세요.");
+                return false;
+            }
 
             $.ajax({
                 url: "activeKing.ao",
@@ -295,41 +299,6 @@
                 }
             })
         });
-    });
-
-    $('#btnDateSearch').on('click', function () {
-        var checkNum = 2;//3개월이면 2로 셋팅
-        //선택된 값을 가져온다.
-        var startYear = $("#start_year").val();
-        var startMonth = $("#start_month").val();
-        var endYear = $("#end_year").val();
-        var endMonth = $("#end_month").val();
-        alert(startMonth);
-        //계산을 위해 명시적으로 형변환
-        var startYearNum = Number(startYear);
-        var startMonthNum = Number(startMonth);
-        var endYearNum = Number(endYear);
-        var endMonthNum = Number(endMonth);
-
-        //일단 차이를 재서 위에서 정한 월이 넘어가는지 확인
-        var result = ((endYearNum * 12) + endMonthNum) - ((startYearNum * 12) + startMonthNum);
-        if (result > checkNum) {
-            alert("날짜 검색 범위는 " + (checkNum + 1) + "개월 입니다.");
-            if (endMonthNum <= checkNum) {
-                startYearNum = endYearNum - 1;
-                startMonthNum = 12 - (checkNum - endMonthNum)
-            } else {
-                startYearNum = endYearNum;
-                startMonthNum = endMonthNum - checkNum;
-            }
-            $("#start_year").val(startYearNum).attr("selected", "selected");
-            $("#start_month").val(startMonthNum).attr("selected", "selected");
-        }
-        ;
-    });
-
-    $('.repUser').on('click', function () {
-        alert("repUserCheck")
     });
 </script>
 </body>
