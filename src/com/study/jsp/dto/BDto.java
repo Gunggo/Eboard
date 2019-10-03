@@ -16,6 +16,22 @@ public class BDto {
 	private int bIndent;
 	private int bGno;
 	private String fileName;
+	private int count;
+
+
+
+	public BDto(String bName, int count) {
+		this.bName = bName;
+		this.count = count;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
 
 	public String getFileName() {
 		return fileName;

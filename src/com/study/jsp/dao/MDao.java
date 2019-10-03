@@ -35,7 +35,7 @@ public class MDao {
     public void snsInsert(MDto dto) {
         Connection con = null;
         PreparedStatement pstmt = null;
-        String query = "insert into members (id, pw, name, email, rdate, address) values(?,?,?,?,?,?)";
+        String query = "insert into members (id, pw, bname, email, rdate, address) values(?,?,?,?,?,?)";
 
         try {
             con = dataSource.getConnection();
@@ -64,14 +64,17 @@ public class MDao {
 
         Connection con = null;
         PreparedStatement pstmt = null;
-        String query = "insert into members (ID, NAME, RDATE) values (?, ?, ?)";
+        String query = "insert into members (id, pw, bname, email, rdate, address) values (?, ?, ?, ?, ?, ?)";
 
         try {
             con = dataSource.getConnection();
             pstmt = con.prepareStatement(query);
             pstmt.setString(1,  dto.getId());
-            pstmt.setString(2,  dto.getName());
-            pstmt.setTimestamp(3,  dto.getrDate());
+            pstmt.setString(2,  dto.getPw());
+            pstmt.setString(3,  dto.getName());
+            pstmt.setString(4,  dto.geteMail());
+            pstmt.setTimestamp(5,  dto.getrDate());
+            pstmt.setString(6,  dto.getAddress());
             pstmt.executeUpdate();
             ri = MDao.MEMBER_JOIN_SUCCESS;
         } catch(Exception e) {
@@ -148,7 +151,7 @@ public class MDao {
                 dto = new MDto();
                 dto.setId(set.getString("id"));
                 dto.setPw(set.getString("pw"));
-                dto.setName(set.getString("name"));
+                dto.setName(set.getString("bname"));
                 dto.seteMail(set.getString("eMail"));
                 dto.setrDate(set.getTimestamp("rDate"));
                 dto.setAddress(set.getString("address"));

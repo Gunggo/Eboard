@@ -50,6 +50,9 @@ public class AFrontController extends HttpServlet {
         } else if (com.equals("/blockUser.ao")) {
             command = new ABlkUserCommand();
             command.execute(request, response);
+        } else if (com.equals("/activeKing.ao")) {
+            command = new AkingCommand();
+            command.execute(request, response);
         }
     }
 }

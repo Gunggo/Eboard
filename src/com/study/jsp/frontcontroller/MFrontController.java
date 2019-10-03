@@ -43,7 +43,6 @@ public class MFrontController extends HttpServlet {
         String conPath = request.getContextPath();
         String com = uri.substring(conPath.length());
 
-        // 조인
         if (com.equals("/loginOk.mo")) {
             command = new MLoginCommand();
             command.execute(request, response);

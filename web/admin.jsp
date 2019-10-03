@@ -50,14 +50,11 @@
     <div class="container">
         <div class="container_select" style="margin-top: 20px;">
             <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 20px;">
-                <button type="button" class="btn btn-secondary allUser" onclick="getResult()">회원조회</button>
-                <button type="button" class="btn btn-secondary delCont">게시글 삭제</button>
-                <button type="button" class="btn btn-secondary ctnUser">게시왕</button>
-                <button type="button" class="btn btn-secondary repUser">댓글왕</button>
+                <button type="button" class="btn btn-secondary allUser" onclick="getResult()">회원관리</button>
+                <button type="button" class="btn btn-secondary ctnUser">활동순위</button>
             </div>
         </div>
         <div class="selResult">
-
         </div>
         <div class="serachBox">
         </div>
@@ -121,8 +118,8 @@
                         }
                     }
                     ;
-                    output += "</table>";
                 }
+                output += "</table>";
                 var str = "";
                 str += '<div class="form-group row justify-content-center">';
                 str += '<div class="w100" style="padding-right:10px">';
@@ -143,7 +140,7 @@
                 $(".selResult").html(output);
                 $(".serachBox").html(str);
 
-                $('#btnSearch').on('click', function (e) {
+                $('#btnSearch').on('click', function () {
                     searchType = $('#searchType').val();
                     keyWord = $('#keyword').val();
                     getResult(searchType, keyWord);
@@ -218,34 +215,86 @@
     };
 
     $('.ctnUser').on('click', function () {
+        var nowDate = new Date();
+        nowDate = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-0' + nowDate.getDate();
         $(".selResult").text("");
+
         var str = "";
         str += '<div class="form-group row justify-content-center">';
         str += '<div class="w100" style="padding-right:10px; float: left;">';
         str += '<div class="searchType">';
         str += '<select class="form-control form-control-sm" name="searchType" id="searchType"style="display: inline-block;">';
-        str += '<option value="0">게시왕</option>';
-        str += '<option value="1">댓글왕</option>';
+        str += '<option value="0">게시글 순</option>';
+        str += '<option value="1">댓글 순</option>';
         str += '</select>';
-        str += '<input type="date" name="startDate" id="startDate">';
-        str += '<input type="date" name="endDate" id="endDate" >';
-        str += '<button type="button" name="btnSearch" id="btnSearch">검색';
         str += '</div>';
-        str += '<div class="startYear">';
+        str += '<div class="startDate">'
+        str += '<input type="date" name="startDate" id="startDate" class="form-control form-control-sm" max="' + nowDate + '">';
+        str += '</div>';
+        str += '<div class="endDate">'
+        str += '<input type="date" name="endDate" id="endDate" class="form-control form-control-sm" max="' + nowDate + '">';
+        str += '</div>';
+        str += '<div class="btnSearch">'
+        str += '<button type="button" name="btnSearch" id="btnSearch" class="btn btn-sm btn-primary">검색';
+        str += '</div>';
         str += '</div>';
         str += '</div>';
 
-        $(".selResult").html(str);
-        $(".serachBox").text("");
-    });
+        // 여기서 에러나는거 12월경에 사라진다는데 뭐징 ??
+        $(".serachBox").html(str);
 
-    $('#btnSearch').on('click', function () {
-        var searchType = $('#searchType').val();
-        var startDate = $('#startDate').val();
-        var endDate = $('#endDate').val();
-        alert(searchType);
-        alert(startDate);
-        alert(endDate);
+        $('#btnSearch').on('click', function () {
+
+            searchType = $('#searchType').val();
+            startDate = $('#startDate').val();
+            endDate = $('#endDate').val();
+
+            $.ajax({
+                url: "activeKing.ao",
+                type: "POST",
+                data: {
+                    searchType: searchType,
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                success: function (json) {
+                    json = json.replace(/\n/gi, "\\r\\n");
+                    $(".selResult").text("");
+                    var obj = JSON.parse(json);
+                    var userList = obj.userList;
+                    var output = "";
+                    output += "<table class='table table-hover' id='userTable'>";
+                    output += '<tr style="text-align: center;">';
+                    output += '<th scope="col">아이디</th>';
+                    output += '<th scope="col">이름</th>';
+                    output += '<th scope="col">이메일</th>';
+                    output += '<th scope="col">가입날짜</th>';
+                    output += '<th scope="col">게시수</th>';
+                    output += '</tr>';
+                    for (var i = 0; i < userList.length; i++) {
+                        for (var j = 0; j < userList[i].length; j++) {
+                            var user = userList[i][j];
+                            if (j === 0) {
+                                output += '<tr style="text-align: center;">'
+                                output += '<td>' + user.userId + '</td>';
+                            } else if (j == 1) {
+                                output += '<td>' + user.userName + '</td>';
+                            } else if (j == 2) {
+                                output += '<td>' + user.userEmail + '</td>';
+                            } else if (j == 3) {
+                                output += '<td>' + user.userRdate + '</td>';
+                            } else if (j == 4) {
+                                output += '<td>' + user.userCount + '</td>';
+                                output += '</tr>'
+                            }
+                        }
+                        ;
+                    }
+                    output += "</table>";
+                    $(".selResult").html(output);
+                }
+            })
+        });
     });
 
     $('#btnDateSearch').on('click', function () {
@@ -285,62 +334,3 @@
 </script>
 </body>
 </html>
-
-
-
-<%--// str += '<select id="start_year" name="start_year" class="form-control form-control-sm">';--%>
-<%--// str += '<option value="2019" >2019</option>';--%>
-<%--// str += '<option value="2018" >2018</option>';--%>
-<%--// str += '<option value="2017" >2017</option>';--%>
-<%--// str += '<option value="2016" >2016</option>';--%>
-<%--// str += '<option value="2015" >2015</option>';--%>
-<%--// str += '<option value="2014" >2014</option>';--%>
-<%--// str += '<option value="2013" >2013</option>';--%>
-<%--// str += '</select>';--%>
-<%--// str += '</div>';--%>
-<%--// str += '<div class="startMonth">';--%>
-<%--// str += '<select id="start_month" name="start_month" class="form-control form-control-sm">';--%>
-<%--// str += '<option value="1" >1</option>';--%>
-<%--// str += '<option value="2" >2</option>';--%>
-<%--// str += '<option value="3" >3</option>';--%>
-<%--// str += '<option value="4" >4</option>';--%>
-<%--// str += '<option value="5" >5</option>';--%>
-<%--// str += '<option value="6" >6</option>';--%>
-<%--// str += '<option value="7" >7</option>';--%>
-<%--// str += '<option value="8" >8</option>';--%>
-<%--// str += '<option value="9" >9</option>';--%>
-<%--// str += '<option value="10" >10</option>';--%>
-<%--// str += '<option value="11" >11</option>';--%>
-<%--// str += '<option value="12" >12</option>';--%>
-<%--// str += '</select>';--%>
-<%--// str += '</div>';--%>
-<%--// str += '<div class="endYear">';--%>
-<%--// str += '<select id="end_year" name="end_year" class="form-control form-control-sm">';--%>
-<%--// str += '<option value="2019" >2019</option>';--%>
-<%--// str += '<option value="2018" >2018</option>';--%>
-<%--// str += '<option value="2017" >2017</option>';--%>
-<%--// str += '<option value="2016" >2016</option>';--%>
-<%--// str += '<option value="2015" >2015</option>';--%>
-<%--// str += '<option value="2014" >2014</option>';--%>
-<%--// str += '<option value="2013" >2013</option>';--%>
-<%--// str += '</select>';--%>
-<%--// str += '</div>';--%>
-<%--// str += '<div class="endMonth">';--%>
-<%--// str += '<select id="end_month" name="end_month" class="form-control form-control-sm">';--%>
-<%--// str += '<option value="1" >1</option>';--%>
-<%--// str += '<option value="2" >2</option>';--%>
-<%--// str += '<option value="3" >3</option>';--%>
-<%--// str += '<option value="4" >4</option>';--%>
-<%--// str += '<option value="5" >5</option>';--%>
-<%--// str += '<option value="6" >6</option>';--%>
-<%--// str += '<option value="7" >7</option>';--%>
-<%--// str += '<option value="8" >8</option>';--%>
-<%--// str += '<option value="9" >9</option>';--%>
-<%--// str += '<option value="10" >10</option>';--%>
-<%--// str += '<option value="11" >11</option>';--%>
-<%--// str += '<option value="12" >12</option>';--%>
-<%--// str += '</select>';--%>
-<%--// str += '</div>';--%>
-<%--// str += '<div class="searchBtn">';--%>
-<%--// str += '<button class="btn btn-sm btn-primary" name="btnDateSearch" id="btnDateSearch" onclick="btnDateSearch()">검색</input>';--%>
-<%--// str += '</div>';--%>

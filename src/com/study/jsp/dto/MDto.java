@@ -10,6 +10,32 @@ public class MDto {
     private Timestamp rDate;
     private String address;
     private int block;
+    private int countCon;
+    private int count;
+
+    public MDto(String id, String name, String eMail, Timestamp rDate, int count) {
+        this.id = id;
+        this.name = name;
+        this.eMail = eMail;
+        this.rDate = rDate;
+        this.count = count;
+    }
+
+    public int getCountCon() {
+        return countCon;
+    }
+
+    public void setCountCon(int countCon) {
+        this.countCon = countCon;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public MDto(String id, String pw, String name, String eMail, Timestamp rDate, String address) {
         this.id = id;

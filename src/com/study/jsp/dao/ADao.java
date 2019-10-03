@@ -1,5 +1,6 @@
 package com.study.jsp.dao;
 
+import com.study.jsp.dto.BDto;
 import com.study.jsp.dto.MDto;
 
 import javax.naming.Context;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ADao {
@@ -46,7 +48,7 @@ public class ADao {
                 pstmt.setString(1, keyword);
                 resultSet = pstmt.executeQuery();
             } else if (se.equals("1")) {
-                String query = "select * from members where name like ?";
+                String query = "select * from members where bname like ?";
                 pstmt = con.prepareStatement(query);
                 pstmt.setString( 1, keyword);
                 resultSet = pstmt.executeQuery();
@@ -60,7 +62,7 @@ public class ADao {
             while (resultSet.next()) {
                 String id = resultSet.getString("id");
                 String pw = resultSet.getString("pw");
-                String name = resultSet.getString("name");
+                String name = resultSet.getString("bname");
                 String eMail = resultSet.getString("eMail");
                 Timestamp rDate = resultSet.getTimestamp("rDate");
                 String address = resultSet.getString("address");
@@ -71,6 +73,57 @@ public class ADao {
 
                 list.add(dto);
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (con != null)
+                    con.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public List<MDto> getActKing(String searchType, String startDate, String endDate) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet resultSet = null;
+        List<MDto> list = new ArrayList<MDto>();
+
+        //        select id, BNAME, EMAIL, RDATE,(select count(*) from MVC_BOARD where BNAME = MEMBERS.BNAME) count from MEMBERS
+
+        try {
+            con = dataSource.getConnection();
+            // 선택날짜 없음
+            if (startDate.equals("") || endDate.equals("")) {
+                if (searchType.equals("0")) {
+                    pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from MVC_BOARD where BNAME = MEMBERS.BNAME) count from MEMBERS");
+                    resultSet = pstmt.executeQuery();
+                } else if(searchType.equals("1")) {
+                    pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from REPLY_BOARD where BNAME = MEMBERS.BNAME) count from MEMBERS " +
+                            "order by count desc");
+                    resultSet = pstmt.executeQuery();
+                }
+            }
+
+
+
+            while (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("bname");
+                String email = resultSet.getString("email");
+                Timestamp date = resultSet.getTimestamp("rdate");
+                int count = resultSet.getInt("count");
+
+                MDto dto = new MDto(id, name, email, date, count);
+                list.add(dto);
             }
         } catch (Exception e) {
             e.printStackTrace();

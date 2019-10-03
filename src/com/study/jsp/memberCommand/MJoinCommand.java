@@ -55,7 +55,7 @@ public class MJoinCommand implements BCommand {
 					writer.println("<html><head></head><body>");
 					writer.println("<script language=\"javascript\">");
 					writer.println("	alert(\"회원가입을 축하 합니다..\");");
-					writer.println("	document.location.href=\"login.jsp\");");
+					writer.println("	document.location.href=\"login.jsp\";");
 					writer.println("</script>");
 					writer.println("<body></html>");
 					writer.close();

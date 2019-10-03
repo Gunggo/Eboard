@@ -5,22 +5,23 @@
   Time: 오전 11:15
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    <title>Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        .nav_con {
-            border-bottom: 1px solid #d1d8e4;
-            background-color: #f8f9fa;
-        }
-        /*.container {*/
-        /*    width: 1100px;*/
-        /*    height: 100px;*/
-        /*    margin: 0 185px;*/
-        /*    padding: 0 16px;*/
-        /*}*/
-    </style>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<title>Title</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+    .nav_con {
+        border-bottom: 1px solid #d1d8e4;
+        background-color: #f8f9fa;
+    }
+
+    /*.container {*/
+    /*    width: 1100px;*/
+    /*    height: 100px;*/
+    /*    margin: 0 185px;*/
+    /*    padding: 0 16px;*/
+    /*}*/
+</style>
 </head>
 <body>
 <div class="nav_con">
@@ -37,9 +38,12 @@
         <li class="nav-item">
             <a class="nav-link" href="list.bo?bgno=3">공지게시판</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="javascript:window.location='admin.jsp'">관리자</a>
-        </li>
+        <c:set var="adminCheck" value="${id}"/>
+        <c:if test="${adminCheck == 'master'}">
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="javascript:window.location='admin.jsp'">관리자</a>
+            </li>
+        </c:if>
     </ul>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
