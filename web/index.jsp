@@ -52,7 +52,7 @@
             width: 700px;
         }
 
-        .footer {
+        .chatBox {
         }
 
         @media (min-width: 768px) {
@@ -124,20 +124,22 @@
 
 
         <div class="container_right">
-            <c:set var="name" value="${name}"/>
-            <c:choose>
-                <c:when test="${name == null}">
-                    <%@include file="main_login.jsp" %>
-                </c:when>
-                <c:otherwise>
-                    <%@include file="main_loginAfter.jsp" %>
-                </c:otherwise>
-            </c:choose>
-<%--            <% if (session.getAttribute("name") == null) {%>--%>
-<%--            <%@include file="main_login.jsp" %>--%>
-<%--            <% } else {%>--%>
-<%--            <%@include file="main_loginAfter.jsp" %>--%>
-<%--            <%}%>--%>
+            <div class="infoBox">
+                <c:set var="name" value="${name}"/>
+                <c:choose>
+                    <c:when test="${name == null}">
+                        <%@include file="main_login.jsp" %>
+                    </c:when>
+                    <c:otherwise>
+                        <%@include file="main_loginAfter.jsp" %>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            <div class="chatBox">
+<%--                <c:if test="${name != null}">--%>
+                    <%@include file="client.jsp" %>
+<%--                </c:if>--%>
+            </div>
         </div>
     </div>
     <div class="footer">
@@ -161,9 +163,6 @@
     });
 </script>
 
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

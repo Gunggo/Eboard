@@ -231,4 +231,26 @@ public class MDao {
         }
         return ri;
     }
+
+    public void delUser(String id) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = dataSource.getConnection();
+            pstmt = con.prepareStatement("delete from MEMBERS where ID = ?");
+            pstmt.setString(1, id);
+            pstmt.executeUpdate();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(pstmt != null) pstmt.close();
+                if (con != null) con.close();
+            } catch(Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
 }

@@ -19,6 +19,8 @@
     </style>
 </head>
 <body>
+<script src="https://www.google.com/recaptcha/api.js?render=6LcA1rsUAAAAAM_DiA7Anz7uM-dlEbq63USvTqrf
+"></script>
 <form action="loginOk.mo" method="post" class="was-validated action">
     <div class="container">
         <div class="row">
@@ -68,6 +70,9 @@
                                             JSON.stringify(res);
                                             kakaoId = res.id;
                                             kakaoName = res.properties['nickname'];
+
+                                            location.replace("snsLoginOk.mo?kakaoId="+ kakaoId + "&kakaoName=" + kakaoName);
+
                                             // alert(JSON.stringify(authObj));
                                             // console.log(res.id);
                                             // console.log(res.kaccount_email);
@@ -97,12 +102,22 @@
 <%--                                $('#kakaoName').val(kakaoName);--%>
 <%--                            </script>--%>
                         </div>
+                        <input type="hidden" id="g-recaptcha" name="g-recaptcha">
                     </form>
                 </fieldset>
             </div>
         </div>
     </div>
 </form>
+
+<script type="text/javascript">
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LcA1rsUAAAAAM_DiA7Anz7uM-dlEbq63USvTqrf', {action: 'homepage'}).then(function(token) {
+            // 토큰을 받아다가 g-recaptcha 에다가 값을 넣어줍니다.
+            document.getElementById('g-recaptcha').value = token;
+        });
+    });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>

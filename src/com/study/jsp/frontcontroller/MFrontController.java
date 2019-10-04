@@ -1,10 +1,7 @@
 package com.study.jsp.frontcontroller;
 
 import com.study.jsp.boardCommand.BCommand;
-import com.study.jsp.memberCommand.MJoinCommand;
-import com.study.jsp.memberCommand.MLoginCommand;
-import com.study.jsp.memberCommand.MModifyCommand;
-import com.study.jsp.memberCommand.MSnsLoginCommand;
+import com.study.jsp.memberCommand.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,6 +55,9 @@ public class MFrontController extends HttpServlet {
             logout(request, response);
         } else if (com.equals("/snsLoginOk.mo")) {
             command = new MSnsLoginCommand();
+            command.execute(request, response);
+        } else if (com.equals("/delUser.mo")) {
+            command = new MDelCommand();
             command.execute(request, response);
         }
     }

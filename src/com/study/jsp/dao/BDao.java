@@ -354,7 +354,7 @@ public class BDao {
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, Integer.parseInt(bId));
 
-            int rn = pstmt.executeUpdate();
+            pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

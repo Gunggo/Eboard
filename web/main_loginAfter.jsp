@@ -56,13 +56,16 @@
     </div>
     <div class="lg_links">
         <form action="logout.mo" method="post">
-            <input type="submit" value="로그아웃" id="frm_logout">&nbsp;&nbsp;
-            <input type="button" value="정보수정"
-                   onclick="javascript:window.location='modify.jsp'">
+            <input type="submit" value="로그아웃" id="frm_logout">
+            <c:set var="snsCheck" value="${snsLogin}"/>
+            <c:if test="${snsCheck == null}">
+                <input type="button" value="정보수정"
+                       onclick="javascript:window.location='modify.jsp'">
+            </c:if>
             <c:set var="name" value="<%=name%>"/>
             <c:if test="${name == 'master'}">
                 <input type="button" value="관리"
-                        onclick="javascript:window.location='admin.jsp'">
+                       onclick="javascript:window.location='admin.jsp'">
             </c:if>
         </form>
     </div>

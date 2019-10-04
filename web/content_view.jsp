@@ -31,29 +31,27 @@
 </div>
 <div class="container">
     <div class="content">
-        <table width="500" cellpadding="0" cellspacing="0" border="1">
-            <tr>
-                <td> 번호</td>
-                <td> ${content_view.bId } </td>
-            </tr>
-            <tr>
-                <td> 히트</td>
-                <td> ${content_view.bHit } </td>
-            </tr>
+        <table class="table" width="500" cellpadding="0" cellspacing="0" border="1">
+            <div class="writer">
             <tr>
                 <td> 작성자</td>
                 <td> ${content_view.bName } </td>
             </tr>
+            </div>
+            <div class="title">
             <tr>
                 <td> 제목</td>
                 <td> ${content_view.bTitle } </td>
             </tr>
+            </div>
+            <div class="contnet">
             <tr>
                 <td> 내용</td>
                 <td>
                     ${content_view.bContent }
                 </td>
             </tr>
+            </div>
             <tr id="checkFile">
                 <script>
                     output = "";
@@ -71,7 +69,8 @@
                 <td colspan="2">
                     <c:set var="contentName" value="${content_view.bName}"/>
                     <c:set var="sessionName" value="${name}"/>
-                    <c:if test="${contentName == sessionName}">
+                    <c:set var="masterName" value="master"/>
+                    <c:if test="${contentName == sessionName || sessionName == masterName}">
                         <a href="modify_view.bo?bId=${content_view.bId }">수정</a>&nbsp;&nbsp;
                         <a href="delete.bo?bId=${content_view.bId }">삭제</a>&nbsp;&nbsp;
                     </c:if>
@@ -163,8 +162,8 @@
                         } else if (j === 1) {
                             output += "<th colspan='2'>" + reply.reply_date + "</th>";
                             if (replyList[i][0].id == ${id}) {
-                                output += '<th style="float: right" class="upRepBtn"><button type="button" value="' + reply_no + '" class="repDelete">삭제</button>';
-                                output += '<button type="button" value="' + repArr + '" class="repUpdate">수정</button></th>';
+                                    output += '<th style="float: right" class="upRepBtn"><button type="button" value="' + reply_no + '" class="repDelete">삭제</button>';
+                                    output += '<button type="button" value="' + repArr + '" class="repUpdate">수정</button></th>';
                             }
                             output += "</tr>";
                         } else if (j === 2) {
