@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.study.jsp.adminCommand.*;
+import com.study.jsp.boardCommand.BCommand;
 
 @WebServlet("*.ao")
 public class AFrontController extends HttpServlet {
@@ -32,7 +33,7 @@ public class AFrontController extends HttpServlet {
     protected void actionDo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        ACommand command = null;
+        BCommand command = null;
 
         String uri = request.getRequestURI();
         String conPath = request.getContextPath();

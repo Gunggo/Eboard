@@ -1,5 +1,6 @@
 package com.study.jsp.adminCommand;
 
+import com.study.jsp.boardCommand.BCommand;
 import com.study.jsp.dao.ADao;
 import com.study.jsp.dto.BDto;
 import com.study.jsp.dto.MDto;
@@ -13,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class AkingCommand implements ACommand {
+public class AkingCommand implements BCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String searchType = request.getParameter("searchType");

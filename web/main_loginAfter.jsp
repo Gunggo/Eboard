@@ -20,8 +20,7 @@
         font-weight: bold;
     }
 
-    .lg_links input {
-        float: right;
+    .section_login input {
         background-color: white;
     }
 
@@ -29,32 +28,11 @@
         padding: 0 10px;
     }
 </style>
-<style>
-    .section_login {
-        padding: 5px 20px;
-    }
-
-    .lg_btm h1 {
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .lg_links input {
-        float: right;
-        background-color: white;
-    }
-
-    #frm_logout {
-        padding: 0 10px;
-    }
-</style>
-</head>
 <body>
 <div class="section_login">
     <div class="lg_btm">
         <h1><%=name%>님 안녕하세요.</h1><br>
     </div>
-    <div class="lg_links">
         <form action="logout.mo" method="post">
             <input type="submit" value="로그아웃" id="frm_logout">
             <c:set var="snsCheck" value="${snsLogin}"/>
@@ -65,16 +43,7 @@
             <c:set var="name" value="<%=name%>"/>
             <c:if test="${name == 'master'}">
                 <input type="button" value="관리"
-                       onclick="javascript:window.location='admin.jsp'">
+                       onclick="javascript:window.location='admin.jsp'" style="padding-right: 10px;">
             </c:if>
         </form>
-    </div>
-
-    <%--	<h1><%=name%>님 안녕하세요.--%>
-    <%--	</h1>--%>
-    <%--	<br>--%>
-    <%--	<form action="logout.do" method="post">--%>
-    <%--		<input type="submit" value="로그아웃">&nbsp;&nbsp;&nbsp; <input--%>
-    <%--			type="button" value="정보수정"--%>
-    <%--			onclick="javascript:window.location='modify.jsp'">--%>
 </div>

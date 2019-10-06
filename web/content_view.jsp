@@ -161,7 +161,7 @@
                             output += "<th>작성자 : " + reply.id + "</th>";
                         } else if (j === 1) {
                             output += "<th colspan='2'>" + reply.reply_date + "</th>";
-                            if (replyList[i][0].id == ${id}) {
+                            if (replyList[i][0].id == '${id}') {
                                     output += '<th style="float: right" class="upRepBtn"><button type="button" value="' + reply_no + '" class="repDelete">삭제</button>';
                                     output += '<button type="button" value="' + repArr + '" class="repUpdate">수정</button></th>';
                             }

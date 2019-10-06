@@ -8,7 +8,7 @@
             name="jdbc/Oracle11g"
             password="tiger"
             type="javax.sql.DataSource"
-            url="jdbc:oracle:thin:@localhost:1521:xe"
+            url="jdbc:oracle:thin:@localhost:1521:orcl"
             username="scott"
     />
 

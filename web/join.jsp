@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-    <script language="JavaScript" src="members.js"></script>
+    <script language="JavaScript" src="/js/members.js"></script>
     <style>
         p, h1, form, button {
             border: 0;

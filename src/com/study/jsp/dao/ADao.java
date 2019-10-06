@@ -104,7 +104,7 @@ public class ADao {
             // 선택날짜 없음
             if (startDate.equals("") || endDate.equals("")) {
                 if (searchType.equals("0")) {
-                    pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from MVC_BOARD where BNAME = MEMBERS.BNAME) count from MEMBERS");
+                    pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from MVC_BOARD where BNAME = MEMBERS.BNAME) count from MEMBERS order by count desc");
                     resultSet = pstmt.executeQuery();
                 } else if(searchType.equals("1")) {
                     pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from REPLY_BOARD where BNAME = MEMBERS.BNAME) count from MEMBERS " +
@@ -116,13 +116,13 @@ public class ADao {
             if (!startDate.equals("") && !endDate.equals("")) {
                 if (searchType.equals("0")) {
                     pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from MVC_BOARD where BNAME = MEMBERS.BNAME" +
-                            " and BDATE between to_date(?,'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') + 1) count from MEMBERS");
+                            " and BDATE between to_date(?,'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') + 1) count from MEMBERS order by count desc");
                     pstmt.setString( 1, startDate);
                     pstmt.setString( 2, endDate);
                     resultSet = pstmt.executeQuery();
                 } else if(searchType.equals("1")) {
                     pstmt = con.prepareStatement("select id, BNAME, EMAIL, RDATE,(select count(*) from REPLY_BOARD where BNAME = MEMBERS.BNAME" +
-                            " and BDATE between to_date(?,'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') + 1) count from MEMBERS");
+                            " and BDATE between to_date(?,'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') + 1) count from MEMBERS order by count desc");
                     pstmt.setString( 1, startDate);
                     pstmt.setString( 2, endDate);
                     resultSet = pstmt.executeQuery();

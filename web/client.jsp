@@ -12,10 +12,10 @@
     <input type="hidden" value="<%=session.getId().substring(0,6)%>"
            id="chat_id"/>
 </c:if>
-<div id="_chatbox" style="display: none">
+<div id="_chatbox" style="display: none; border: 1px solid;">
     <fieldset>
         <div id="messageWindow"></div>
-        <br/> <input id="inputMessage" type="text" onkeyup="enterkey()"/>
+        <br/> <input id="inputMessage" type="text" onkeyup="enterkey()" style="border: 1px solid;"/>
         <input type="submit" value="send" onclick="send()"/>
     </fieldset>
 </div>

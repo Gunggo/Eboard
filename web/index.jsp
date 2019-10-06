@@ -43,7 +43,6 @@
             float: right;
             width: 330px;
             text-align: center;
-            border: 1px solid;
         }
 
         .container_left {
@@ -124,7 +123,7 @@
 
 
         <div class="container_right">
-            <div class="infoBox">
+            <div class="infoBox" style="border: 1px solid;">
                 <c:set var="name" value="${name}"/>
                 <c:choose>
                     <c:when test="${name == null}">
@@ -135,10 +134,10 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <div class="chatBox">
-<%--                <c:if test="${name != null}">--%>
-                    <%@include file="client.jsp" %>
-<%--                </c:if>--%>
+            <div class="chatBox" style="margin-top: 20px;">
+                <%--                <c:if test="${name != null}">--%>
+                <%@include file="client.jsp" %>
+                <%--                </c:if>--%>
             </div>
         </div>
     </div>
